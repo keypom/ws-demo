@@ -1,95 +1,101 @@
 import 'regenerator-runtime/runtime';
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect, useRef } from 'react';
 import Big from 'big.js';
 import Form from './components/Form';
 import SignIn from './components/SignIn';
 import Messages from './components/Messages';
+import getConfig from './config.js';
+import { getSelector, getAccount, viewFunction, functionCall } from './utils/wallet-selector-compat.ts';
 
+const config = getConfig(process.env.NEAR_ENV || 'testnet');
+const { networkId, contractName } = config
 const SUGGESTED_DONATION = '0';
 const BOATLOAD_OF_GAS = Big(3).times(10 ** 13).toFixed();
 
-const App = ({ contract, currentUser, nearConfig, wallet }) => {
-  const [messages, setMessages] = useState([]);
+const App = () => {
+	const selectorRef = useRef();
+	const [selector, setSelector] = useState(null);
+	const [currentUser, setCurrentUser] = useState(null);
+	const [messages, setMessages] = useState([]);
 
-  useEffect(() => {
-    // TODO: don't just fetch once; subscribe!
-    contract.getMessages().then(setMessages);
-  }, []);
+	const onMount = async () => {
+		if (selector) return;
+		const s = await getSelector({
+			networkId,
+			contractId: contractName,
+			onAccountChange: async (accountId) => {
+				console.log('account changed', accountId)
+				if (accountId) {
+					setCurrentUser({
+						accountId,
+						balance: (await (await getAccount()).getAccountBalance()).available
+					})
+				}
+			}
+		});
+		selectorRef.current = s;
+		setSelector(s);
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+		setMessages(await viewFunction({
+			contractId: contractName,
+			methodName: 'getMessages',
+		}))
+	};
+	useEffect(() => {
+		onMount();
+	}, []);
 
-    const { fieldset, message, donation } = e.target.elements;
+	const onSubmit = async (e) => {
+		e.preventDefault();
 
-    fieldset.disabled = true;
+		const { fieldset, message, donation } = e.target.elements;
 
-    // TODO: optimistically update page with new message,
-    // update blockchain data in background
-    // add uuid to each message, so we know which one is already known
-    contract.addMessage(
-      { text: message.value },
-      BOATLOAD_OF_GAS,
-      Big(donation.value || '0').times(10 ** 24).toFixed()
-    ).then(() => {
-      contract.getMessages().then(messages => {
-        setMessages(messages);
-        message.value = '';
-        donation.value = SUGGESTED_DONATION;
-        fieldset.disabled = false;
-        message.focus();
-      });
-    });
-  };
+		fieldset.disabled = true;
 
-  const signIn = () => {
-    wallet.requestSignIn(
-      {contractId: nearConfig.contractName, methodNames: [contract.addMessage.name]}, //contract requesting access
-      'NEAR Guest Book', //optional name
-      null, //optional URL to redirect to if the sign in was successful
-      null //optional URL to redirect to if the sign in was NOT successful
-    );
-  };
+		console.log(contractName)
 
-  const signOut = () => {
-    wallet.signOut();
-    window.location.replace(window.location.origin + window.location.pathname);
-  };
+		const res = await functionCall({
+			contractId: contractName,
+			methodName: 'addMessage',
+			args: { text: message.value },
+			gas: BOATLOAD_OF_GAS,
+			attachedDeposit: Big(donation.value || '0').times(10 ** 24).toFixed()
+		})
 
-  return (
-    <main>
-      <header>
-        <h1>NEAR Guest Book</h1>
-        { currentUser
-          ? <button onClick={signOut}>Log out</button>
-          : <button onClick={signIn}>Log in</button>
-        }
-      </header>
-      { currentUser
-        ? <Form onSubmit={onSubmit} currentUser={currentUser} />
-        : <SignIn/>
-      }
-      { !!currentUser && !!messages.length && <Messages messages={messages}/> }
-    </main>
-  );
-};
+		setMessages(await viewFunction({
+			contractId: contractName,
+			methodName: 'getMessages',
+		}))
+	};
 
-App.propTypes = {
-  contract: PropTypes.shape({
-    addMessage: PropTypes.func.isRequired,
-    getMessages: PropTypes.func.isRequired
-  }).isRequired,
-  currentUser: PropTypes.shape({
-    accountId: PropTypes.string.isRequired,
-    balance: PropTypes.string.isRequired
-  }),
-  nearConfig: PropTypes.shape({
-    contractName: PropTypes.string.isRequired
-  }).isRequired,
-  wallet: PropTypes.shape({
-    requestSignIn: PropTypes.func.isRequired,
-    signOut: PropTypes.func.isRequired
-  }).isRequired
+	const signIn = () => {
+		selector?.show();
+	};
+
+	const signOut = async () => {
+		await selector?.signOut().catch((err) => {
+			console.log("Failed to sign out");
+			console.error(err);
+		});
+		window.location.reload()
+	};
+
+	return (
+		<main>
+			<header>
+				<h1>NEAR Guest Book</h1>
+				{currentUser
+					? <button onClick={signOut}>Log out</button>
+					: <button onClick={signIn}>Log in</button>
+				}
+			</header>
+			{currentUser
+				? <Form onSubmit={onSubmit} currentUser={currentUser} />
+				: <SignIn />
+			}
+			{!!currentUser && !!messages.length && <Messages messages={messages} />}
+		</main>
+	);
 };
 
 export default App;
