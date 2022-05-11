@@ -1,0 +1,11 @@
+{
+  "name": "@near-wallet-selector/math-wallet",
+  "version": "3.0.1",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "dependencies": {
+    "near-api-js": "0.44.2",
+    "is-mobile": "^3.0.0"
+  },
+  "peerDependencies": {}
+}

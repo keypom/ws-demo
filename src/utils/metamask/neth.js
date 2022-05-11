@@ -10,10 +10,10 @@ const {
 		format: { parseNearAmount }
 	}
 } = nearAPI;
-import { connection, keyStore, networkId, contractAccount } from '../../utils/near-utils'
-import { accountExists } from '../../test/test-utils'
+import { connection, keyStore, networkId, contractAccount, accountSuffix } from './near-utils'
+import { accountExists } from './test-utils'
 import { get, set, del } from './store';
-import contractPath from 'url:../../out/main.wasm'
+import contractPath from 'url:../../../out/neth.wasm'
 
 const FUNDING_ACCOUNT_ID = 'neth.testnet'
 const MAP_ACCOUNT_ID = 'map.neth.testnet'
@@ -25,12 +25,13 @@ const APP_KEY_ACCOUNT_ID = '__APP_KEY_ACCOUNT_ID'
 const gas = '100000000000000'
 const half_gas = '50000000000000'
 /// this is the new account amount 0.21 for account name, keys, contract and 0.01 for mapping contract storage cost
-const attachedDeposit = parseNearAmount('0.25')
-const attachedDepositMapping = parseNearAmount('0.01')
+const attachedDeposit = parseNearAmount('0.3')
+const attachedDepositMapping = parseNearAmount('0.02')
 /// for NEAR keys we need 64 chars hex for publicKey WITHOUT 0x
 const buf2hex = (buf) => ethers.utils.hexlify(buf).substring(2)
 const pub2hex = (publicKey) => ethers.utils.hexlify(PublicKey.fromString(publicKey).data).substring(2)
 const obj2hex = (obj) => ethers.utils.hexlify(ethers.utils.toUtf8Bytes(JSON.stringify(obj))).substring(2);
+const ACCOUNT_REGEX = new RegExp('^(([a-z0-9]+[\-_])*[a-z0-9]+\.)*([a-z0-9]+[\-_])*[a-z0-9]+$')
 
 /// account creation and connection flow
 
@@ -196,6 +197,11 @@ export const handleCheckAccount = async (ethAddress) => {
 
 /// on same domain as setup
 
+const hasAppKey = (accessKeys) => accessKeys.some((k) => {
+	const functionCallPermission = k?.access_key?.permission?.FunctionCall
+	return functionCallPermission.allowance !== null && functionCallPermission.method_names[0] === 'execute'
+})
+
 export const handleRefreshAppKey = async (signer, ethAddress) => {
 	const { account, accountId } = await getUnlimitedKeyAccount(signer, ethAddress)
 	
@@ -216,10 +222,7 @@ export const handleRefreshAppKey = async (signer, ethAddress) => {
 	]
 	/// check keys, find old app key, delete that first
 	const accessKeys = await account.getAccessKeys()
-	if (accessKeys.some((k) => {
-		const functionCallPermission = k?.access_key?.permission?.FunctionCall
-		return functionCallPermission.allowance !== null && functionCallPermission.method_names[0] === 'execute'
-	})) {
+	if (hasAppKey(accessKeys)) {
 		// old public key based on current app_key_nonce
 		const appKeyNonce = parseInt(await account.viewFunction(accountId, 'get_app_key_nonce'), 16).toString()
 		const { publicKey: oldPublicKey } = await keyPairFromEthSig(signer, appKeyPayload(accountId, appKeyNonce))
@@ -393,7 +396,7 @@ const getUnlimitedKeyAccount = async (signer, ethAddress) => {
 	if (!secretKey) {
 		// TODO remove dep on near-utils
 		// use any random near account to check mapping
-		accountId = await contractAccount.viewFunction(MAP_ACCOUNT_ID, 'get_near', { eth_address: ethAddress });
+		accountId = await getNearMap(ethAddress);
 		const { secretKey: _secretKey } = await keyPairFromEthSig(signer, unlimitedKeyPayload(accountId, ethAddress))
 		secretKey = _secretKey
 	} else {
@@ -470,18 +473,24 @@ export const switchEthereum = async () => {
 
 /// near
 
-export const hasAppKey = async (accountId) => {
-	const account = new Account(connection, accountId)
-	const accessKeys = await account.getAccessKeys()
-	return accessKeys.some((k) => {
-		const functionCallPermission = k?.access_key?.permission?.FunctionCall
-		return functionCallPermission.allowance !== null && functionCallPermission.method_names[0] === 'execute'
-	})
+export const getNearMap = async (ethAddress) => {
+	return contractAccount.viewFunction(MAP_ACCOUNT_ID, 'get_near', { eth_address: ethAddress })
 }
 
-export const signIn = async () => {
-	return getNear()
+export const getNear = async () => {
+	const secretKey = get(APP_KEY_SECRET)
+	const accountId = get(APP_KEY_ACCOUNT_ID)
+	if (!secretKey || !accountId) {
+		await getAppKey(await getEthereum())
+		return await getNear()
+	}
+	const account = new Account(connection, accountId)
+	const keyPair = KeyPair.fromString(secretKey)
+	keyStore.setKey(networkId, accountId, keyPair);
+	return { account, accountId, keyPair, secretKey }
 }
+
+export const signIn = getNear
 
 export const signOut = async () => {
 	const accountId = get(APP_KEY_ACCOUNT_ID)
@@ -497,28 +506,37 @@ export const isSignedIn = () => {
 	return !!get(APP_KEY_SECRET) || !!get(APP_KEY_ACCOUNT_ID)
 }
 
-export const getNearMap = async (ethAddress) => {
-	return contractAccount.viewFunction(MAP_ACCOUNT_ID, 'get_near', { eth_address: ethAddress })
-}
-
-export const getNear = async () => {
-	const secretKey = get(APP_KEY_SECRET)
-	const accountId = get(APP_KEY_ACCOUNT_ID)
-	if (!secretKey || !accountId) {
-		await getAppKey(await getEthereum())
-		return getNear()
+const promptValidAccountId = async (msg) => {
+	const newAccountId = window.prompt(msg)
+	if (!newAccountId) {
+		throw new Error("NETH Error: failed to pick valid NEAR account name")
 	}
-	const account = new Account(connection, accountId)
-	const keyPair = KeyPair.fromString(secretKey)
-	keyStore.setKey(networkId, accountId, keyPair);
-	return { account, accountId, keyPair, secretKey }
+	if (newAccountId.length < 2 || newAccountId.indexOf('.') > -1 || !ACCOUNT_REGEX.test(newAccountId) || newAccountId.length > 64) {
+		return promptValidAccountId(`account is invalid (a-z, 0-9 and -,_ only; min 2; max 64; ${accountSuffix} applied automatically)`)
+	}
+	if (await accountExists(newAccountId)) {
+		return promptValidAccountId(`account already exists`)
+	}
+	return newAccountId
 }
 
 export const getAppKey = async ({ signer, ethAddress: eth_address }) => {
-	const accountId = await contractAccount.viewFunction(MAP_ACCOUNT_ID, 'get_near', { eth_address });
+	let accountId = await getNearMap(eth_address);
+	if (!accountId) {
+		/// throw new Error("NETH Error: ethereum account not connected to near account")
+		/// prompt for near account name and auto deploy
+		const newAccountId = await promptValidAccountId(`The Ethereum address ${eth_address} is not connected to a NEAR account yet. Select a NEAR account name and we'll create and connect one for you.`)
+		const { account } = await handleCreate(signer, eth_address, newAccountId + accountSuffix)
+		accountId = account.accountId
+	}
 	const appKeyNonce = parseInt(await contractAccount.viewFunction(accountId, 'get_app_key_nonce'), 16).toString()
 	const { publicKey, secretKey } = await keyPairFromEthSig(signer, appKeyPayload(accountId, appKeyNonce))
 	const account = new Account(connection, accountId)
+	// check that app key exists on account
+	const accessKeys = await account.getAccessKeys()
+	if (!hasAppKey(accessKeys)) {
+		await handleRefreshAppKey(signer, eth_address)
+	}
 	const keyPair = KeyPair.fromString(secretKey)
 	keyStore.setKey(networkId, accountId, keyPair);
 	set(APP_KEY_SECRET, secretKey)
@@ -526,21 +544,21 @@ export const getAppKey = async ({ signer, ethAddress: eth_address }) => {
 	return { publicKey, secretKey, account }
 }
 
-export const signAndSendTransaction = async ({
-	receiverId,
-	actions,
-}) => {
+export const signAndSendTransactions = async ({ transactions }) => {
 	const { signer } = await getEthereum()
 	const { account, accountId } = await getNear()
-	actions = convertActions(actions, accountId, receiverId)
+	
+	const transformedTxs = transactions.map(({ receiverId, actions }) => ({
+		receiver_id: receiverId,
+		actions: convertActions(actions, accountId, receiverId),
+	}))
+
 	const nonce = parseInt(await account.viewFunction(accountId, 'get_nonce'), 16).toString()
 	const args = await ethSignJson(signer, {
 		nonce,
-		transactions: [{
-			receiver_id: receiverId,
-			actions
-		}]
+		transactions: transformedTxs
 	});
+
 	const res = await account.functionCall({
 		contractId: accountId,
 		methodName: 'execute',
@@ -555,10 +573,10 @@ export const signAndSendTransaction = async ({
 export const convertActions = (actions, accountId, receiverId) => actions.map((_action) => {
 
 	const { enum: type } = _action
-    const { gas, publicKey, methodName, args, deposit, accessKey, code } = _action[type];
+    const { gas, publicKey, methodName, args, deposit, accessKey, code } = _action[type] || _action;
 
     const action = {
-        type: type[0].toUpperCase() + type.substr(1),
+        type: (type && type[0].toUpperCase() + type.substr(1)) || 'FunctionCall',
         gas: (gas && gas.toString()) || undefined,
         public_key: (publicKey && pub2hex(publicKey)) || undefined,
         method_name: methodName,

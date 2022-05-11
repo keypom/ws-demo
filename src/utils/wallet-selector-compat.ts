@@ -1,6 +1,6 @@
-import { setupWalletSelector } from "../../../near-wallet-selector/dist/packages/core";
-import { setupNearWallet } from "../../../near-wallet-selector/dist/packages/near-wallet";
-import { setupSender } from "../../../near-wallet-selector/dist/packages/sender";
+import { setupWalletSelector } from "../lib/core";
+import { setupNearWallet } from "../lib/near-wallet";
+import { setupSender } from "../lib/sender";
 import * as nearAPI from "near-api-js";
 import BN from "bn.js";
 import { nearWalletIcon, senderWalletIcon } from "./assets/icons";
@@ -11,7 +11,7 @@ const {
 	keyStores: { BrowserLocalStorageKeyStore }
 } = nearAPI
 
-let network, contractId, selector, init, accountId, near;
+let network, contractId, selector, wallet, init, accountId, near;
 
 const networks = {
 	mainnet: {
@@ -57,7 +57,8 @@ export const getSelector = async ({
 	selector = await setupWalletSelector({
 		network,
 		contractId,
-		wallets: [
+		debug: 'true',
+		modules: [
 			setupNearWallet({
 				iconUrl: nearWalletIcon,
 			}),
@@ -70,17 +71,39 @@ export const getSelector = async ({
 		],
 	});
 
-	selector.on("accountsChanged", (e) => {
-		accountId = e.accounts[0]?.accountId;
-		if (accountId) {
+	selector.store.observable.subscribe(async (state) => {
+		const newAccountId = state.accounts[0]?.accountId
+		if (newAccountId && newAccountId !== accountId) {
+			accountId = newAccountId
+			wallet = await selector.wallet()
 			onAccountChange(accountId);
 		}
-	});
+	})
 
-	const defaultAccountId = (await selector.getAccounts())?.[0]?.accountId;
-	if (defaultAccountId) accountId = defaultAccountId;
-
+	let defaultAccountId
+	try {
+		wallet = await selector.wallet()
+		defaultAccountId = (await wallet?.getAccounts())?.[0]?.accountId;
+	} catch(e) {
+		console.warn(e)
+		if (!/No wallet/.test(e)) throw e
+	}
+	if (defaultAccountId) {
+		accountId = defaultAccountId;
+	}
 	await onAccountChange(accountId);
+
+	selector.signIn = () => {
+		selector.show()
+	}
+
+	selector.signOut = async () => {
+		await wallet.disconnect().catch((err) => {
+			console.log("Failed to disconnect wallet-selector");
+			console.error(err);
+		});
+		window.location.reload()
+	}
 
 	return selector;
 }
@@ -101,17 +124,16 @@ export const getAccount = async (viewAsAccountId: string | null) => {
 };
 
 export const viewFunction = async ({
-	contractId,
+	contractId: _contractId,
 	methodName,
 	args = {},
 }: WalletMethodArgs) => {
-	if (!contractId) {
+	if (!_contractId && !contractId) {
 		throw new Error("viewFunction error: contractId undefined");
 	}
 	if (!methodName) {
 		throw new Error("viewFunction error: methodName undefined");
 	}
-
 	const account = await getAccount(network);
 	return account.viewFunction(contractId, methodName, args)
 };
@@ -124,7 +146,10 @@ export const functionCall = async ({
 	attachedDeposit,
 }: WalletMethodArgs) => {
 	if (!selector) {
-		throw new Error("selector not initialized");
+		throw new Error("functionCall error: selector not initialized");
+	}
+	if (!wallet) {
+		throw new Error("functionCall error: no wallet selected");
 	}
 	if (!_contractId && !contractId) {
 		throw new Error("functionCall error: contractId undefined");
@@ -133,7 +158,7 @@ export const functionCall = async ({
 		throw new Error("functionCall error: methodName undefined");
 	}
 
-	return selector.signAndSendTransaction({
+	return wallet.signAndSendTransaction({
 		receiverId: _contractId || contractId,
 		actions: [
 			{
@@ -148,3 +173,37 @@ export const functionCall = async ({
 		],
 	});
 };
+
+// export const signAndSendTransactions = async ({
+// 	transactions,
+// }: WalletMethodArgs) => {
+// 	if (!selector) {
+// 		throw new Error("functionCall error: selector not initialized");
+// 	}
+// 	if (!wallet) {
+// 		throw new Error("functionCall error: no wallet selected");
+// 	}
+
+// 	/// TODO conver transactions to wallet-selector type
+
+// 	return wallet.signAndSendTransactions({
+// 		transactions: [
+// 			{
+// 				receiverId: _contractId || contractId,
+// 				actions: [
+// 					{
+// 						type: "FunctionCall",
+// 						params: {
+// 							methodName,
+// 							args,
+// 							gas: gas?.toString() || "30000000000000",
+// 							deposit: attachedDeposit?.toString() || "0",
+// 						},
+// 					},
+// 				],
+// 			}
+// 		]
+// 	});
+// };
+
+

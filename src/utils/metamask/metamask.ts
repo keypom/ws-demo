@@ -7,8 +7,9 @@ import {
 	Transaction,
 	FunctionCallAction,
 	WalletBehaviourFactory,
-} from "../../../../near-wallet-selector/dist/packages/core";
-import { getNear, signIn, signOut } from "./neth";
+	waitFor,
+} from "../../lib/core";
+import { getNear, signIn, signOut, signAndSendTransactions } from "./neth";
 
 declare global {
 	interface Window {
@@ -20,20 +21,16 @@ export interface MetaMaskParams {
 	iconUrl?: string;
 }
 
-const MetaMask: WalletBehaviourFactory<InjectedWallet> = ({
+const isInstalled = () => {
+	return !!window.ethereum;
+};
+
+const MetaMask: WalletBehaviourFactory<InjectedWallet> = async ({
 	options,
 	metadata,
 	emitter,
 	logger,
 }) => {
-
-	const isInstalled = () => {
-		return !!window.ethereum;
-	};
-
-	const timeout = (ms: number) => {
-		return new Promise((resolve) => setTimeout(resolve, ms));
-	};
 
 	const isValidActions = (
 		actions: Array<Action>
@@ -53,57 +50,19 @@ const MetaMask: WalletBehaviourFactory<InjectedWallet> = ({
 		return actions.map((x) => x.params);
 	};
 
-	const transformTransactions = (
-		transactions: Array<Optional<Transaction, "signerId">>
-	) => {
-		return transactions.map((transaction) => {
-			return {
-				receiverId: transaction.receiverId,
-				actions: transformActions(transaction.actions),
-			};
-		});
-	};
-
 	// return the wallet interface for wallet-selector
 
 	return {
-		getDownloadUrl() {
-			return "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en";
-		},
-
-		async isAvailable() {
-			return isInstalled() && !isMobile();
-		},
 
 		async connect() {
-			await timeout(200);
-
-			if (!isInstalled()) {
-				throw new Error("Wallet not installed");
+			let account
+			try {
+				account = await signIn();
+			} catch(e) {
+				if (!/not connected/.test(e)) throw e
+				console.log(e)
 			}
-
-			const existingAccounts = await signIn();
-
-			if (existingAccounts.length) {
-				emitter.emit("connected", { accounts: existingAccounts });
-				return existingAccounts;
-			}
-
-			// const { keyPair: accessKey, error } = await signIn();
-
-			// if (!accessKey || error) {
-			// 	await disconnect();
-
-			// 	throw new Error(
-			// 		(typeof error === "string" ? error : error.type) ||
-			// 		"Failed to connect"
-			// 	);
-			// }
-
-			// const newAccounts = getAccounts();
-			// emitter.emit("connected", { accounts: newAccounts });
-
-			return existingAccounts;
+			return [account];
 		},
 
 		async disconnect() {
@@ -112,62 +71,40 @@ const MetaMask: WalletBehaviourFactory<InjectedWallet> = ({
 
 		async getAccounts() {
 			const { accountId } = await getNear();
-			return [accountId]
+			return [{ accountId }]
 		},
 
 		async signAndSendTransaction({
-			signerId,
 			receiverId = options.contractId,
 			actions,
 		}) {
 			logger.log("MetaMask:signAndSendTransaction", {
-				signerId,
 				receiverId,
 				actions,
 			});
 
-			const wallet = getNear();
-
-			return wallet
-				.signAndSendTransaction({
+			return signAndSendTransactions({
+				transactions: [{
 					receiverId,
 					actions: transformActions(actions),
-				})
-				.then((res) => {
-					if (res.error) {
-						throw new Error(res.error);
-					}
-
-					// Shouldn't happen but avoids inconsistent responses.
-					if (!res.response?.length) {
-						throw new Error("Invalid response");
-					}
-
-					return res.response[0];
-				});
+				}]
+			})
 		},
 
 		async signAndSendTransactions({ transactions }) {
 			logger.log("MetaMask:signAndSendTransactions", { transactions });
 
-			const wallet = getNear();
+			const transformedTxs = transactions.map(({
+				receiverId,
+				actions
+			}) => ({
+				receiverId,
+				actions: transformActions(actions)
+			}))
 
-			return wallet
-				.requestSignTransactions({
-					transactions: transformTransactions(transactions),
-				})
-				.then((res) => {
-					if (res.error) {
-						throw new Error(res.error);
-					}
-
-					// Shouldn't happen but avoids inconsistent responses.
-					if (!res.response?.length) {
-						throw new Error("Invalid response");
-					}
-
-					return res.response;
-				});
+			return signAndSendTransactions({
+				transactions: transformedTxs
+			})
 		},
 	};
 };
@@ -175,12 +112,29 @@ const MetaMask: WalletBehaviourFactory<InjectedWallet> = ({
 export function setupMetaMask({
 	iconUrl = "./assets/sender-icon.png",
 }: MetaMaskParams = {}): WalletModule<InjectedWallet> {
-	return {
-		id: "metamask",
-		type: "injected",
-		name: "Sender",
-		description: null,
-		iconUrl,
-		wallet: MetaMask,
+	return async () => {
+		const mobile = isMobile();
+		const installed = await isInstalled();
+
+		if (mobile || !installed) {
+			return null;
+		}
+
+		await waitFor(() => !!window.near?.isSignedIn(), { timeout: 300 }).catch(
+			() => false
+		);
+
+		return {
+			id: "metamask",
+			type: "injected",
+			metadata: {
+				name: "MetaMask",
+				description: null,
+				iconUrl,
+				downloadUrl:
+				  "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en",
+			},
+			init: MetaMask,
+		};
 	};
 }

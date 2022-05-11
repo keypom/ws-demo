@@ -20,7 +20,7 @@ const App = () => {
 
 	const onMount = async () => {
 		if (selector) return;
-		const s = await getSelector({
+		const _selector = await getSelector({
 			networkId,
 			contractId: contractName,
 			onAccountChange: async (accountId) => {
@@ -33,8 +33,9 @@ const App = () => {
 				}
 			}
 		});
-		selectorRef.current = s;
-		setSelector(s);
+
+		selectorRef.current = _selector;
+		setSelector(_selector)
 
 		setMessages(await viewFunction({
 			contractId: contractName,
@@ -49,10 +50,7 @@ const App = () => {
 		e.preventDefault();
 
 		const { fieldset, message, donation } = e.target.elements;
-
 		fieldset.disabled = true;
-
-		console.log(contractName)
 
 		const res = await functionCall({
 			contractId: contractName,
@@ -61,7 +59,12 @@ const App = () => {
 			gas: BOATLOAD_OF_GAS,
 			attachedDeposit: Big(donation.value || '0').times(10 ** 24).toFixed()
 		})
-
+		// would be redirect for NEAR Wallet IF donation > 0
+		console.log(res)
+        message.value = '';
+        donation.value = SUGGESTED_DONATION;
+        fieldset.disabled = false;
+        message.focus();
 		setMessages(await viewFunction({
 			contractId: contractName,
 			methodName: 'getMessages',
@@ -69,15 +72,11 @@ const App = () => {
 	};
 
 	const signIn = () => {
-		selector?.show();
+		selector.signIn();
 	};
 
 	const signOut = async () => {
-		await selector?.signOut().catch((err) => {
-			console.log("Failed to sign out");
-			console.error(err);
-		});
-		window.location.reload()
+		selector.signOut()
 	};
 
 	return (
