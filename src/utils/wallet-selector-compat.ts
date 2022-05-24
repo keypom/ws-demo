@@ -1,17 +1,23 @@
-import { setupWalletSelector } from "../lib/core";
-import { setupNearWallet } from "../lib/near-wallet";
-import { setupSender } from "../lib/sender";
+
+import { setupWalletSelector } from "@near-wallet-selector/core";
+import type { WalletSelector, AccountState } from "@near-wallet-selector/core";
+import { setupModal } from "@near-wallet-selector/modal-ui";
+import type { WalletSelectorModal } from "@near-wallet-selector/modal-ui";
+import { setupNearWallet } from "@near-wallet-selector/near-wallet";
+import { setupSender } from "@near-wallet-selector/sender";
 import * as nearAPI from "near-api-js";
 import BN from "bn.js";
 import { nearWalletIcon, senderWalletIcon } from "./assets/icons";
 import { setupMetaMask } from './metamask/metamask'
+
+import './modal-ui.css'
 
 const {
 	Near, Account,
 	keyStores: { BrowserLocalStorageKeyStore }
 } = nearAPI
 
-let network, contractId, selector, wallet, init, accountId, near;
+let network, contractId, selector, modal, wallet, init, accountId, near;
 
 const networks = {
 	mainnet: {
@@ -80,6 +86,8 @@ export const getSelector = async ({
 		}
 	})
 
+    modal = setupModal(selector, { contractId });
+
 	let defaultAccountId
 	try {
 		wallet = await selector.wallet()
@@ -94,11 +102,11 @@ export const getSelector = async ({
 	await onAccountChange(accountId);
 
 	selector.signIn = () => {
-		selector.show()
+		modal.show()
 	}
 
 	selector.signOut = async () => {
-		await wallet.disconnect().catch((err) => {
+		await wallet.signOut().catch((err) => {
 			console.log("Failed to disconnect wallet-selector");
 			console.error(err);
 		});

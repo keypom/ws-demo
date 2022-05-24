@@ -8,7 +8,7 @@ import {
 	FunctionCallAction,
 	WalletBehaviourFactory,
 	waitFor,
-} from "../../lib/core";
+} from "@near-wallet-selector/core";
 import { getNear, signIn, signOut, signAndSendTransactions } from "./neth";
 
 declare global {
@@ -54,7 +54,7 @@ const MetaMask: WalletBehaviourFactory<InjectedWallet> = async ({
 
 	return {
 
-		async connect() {
+		async signIn() {
 			let account
 			try {
 				account = await signIn();
@@ -65,7 +65,7 @@ const MetaMask: WalletBehaviourFactory<InjectedWallet> = async ({
 			return [account];
 		},
 
-		async disconnect() {
+		async signOut() {
 			await signOut()
 		},
 
