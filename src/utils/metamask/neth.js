@@ -235,8 +235,8 @@ export const handleRefreshAppKey = async (signer, ethAddress) => {
 	/// get args for execute call
 	const args = await ethSignJson(signer, {
 		nonce,
+		receivers: [accountId],
 		transactions: [{
-			receiver_id: accountId,
 			actions,
 		}]
 	});
@@ -268,8 +268,8 @@ export const handleUpdateContract = async (signer, ethAddress) => {
 	const nonce = parseInt(await account.viewFunction(accountId, 'get_nonce'), 16).toString()
 	const args = await ethSignJson(signer, {
 		nonce,
+		receivers: [accountId],
 		transactions: [{
-			receiver_id: accountId,
 			actions,
 		}]
 	});
@@ -338,8 +338,8 @@ export const handleDisconnect = async (signer, ethAddress) => {
 	const nonce = parseInt(await account.viewFunction(accountId, 'get_nonce'), 16).toString()
 	const args = await ethSignJson(signer, {
 		nonce,
+		receivers: [accountId],
 		transactions: [{
-			receiver_id: accountId,
 			actions,
 		}]
 	});
@@ -421,27 +421,78 @@ const unlimitedKeyPayload = (accountId) => ({
 	description: `ONLY sign on this website: ${'https://example.com'}`,
 })
 
+/// main domain, types and eth signTypedData method
+
 const domain = {
     name: "NETH",
     version: "1",
     // chainId: 1, // aurora
     chainId: 1313161554, // aurora
 }
-/// helper gens the args for each call
+
+const HEADER_OFFSET = 'NETH'
+const HEADER_PAD = 8;
+const RECEIVER_MARKER = '|~-_NETH~-_-~RECEIVER_-~|'
+const PREFIX = '|NETH_'
+const SUFFIX = '_NETH|'
+
+const pack = (elements) => elements.map((el) => {
+	const str = typeof el === 'string' ? el : Object.entries(el).map(
+		([k, v]) => `${PREFIX}${k}:${typeof v === 'string' ? v : JSON.stringify(v)}${SUFFIX}`
+	).join('')
+	return HEADER_OFFSET + str.length.toString().padStart(HEADER_PAD, '0') + '__' + str
+}).join('')
+
 const ethSignJson = async (signer, json) => {
 	const types = {
 		Transaction: []
-	}
+	};
 	Object.entries(json).forEach(([k, v]) => {
 		types.Transaction.push({
 			type: 'string',
 			name: k,
+		});
+	});
+	/// convenience for devs so they can pass in JSON
+
+	/// hoist any functionCall args containing receiver|account in their key to top level receivers
+	/// replaces value with marker, contract fills in marker
+
+	if (json.transactions) {
+		Object.values(json.transactions).forEach((tx, i) => {
+			tx.actions.forEach((action) => {
+				if (!action.args) return
+				Object.entries(action.args).forEach(([key, value]) => {
+
+					/// TODO include check on value to determine valid account_id to be replaced
+
+					if (/receiver_id|account_id/g.test(key)) {
+						action.args[key] = RECEIVER_MARKER
+						json.receivers.splice(i+1, 0, value)
+					}
+				})
+			})
 		})
-	})
-	if (json.transactions) json.transactions = JSON.stringify(json.transactions);
-	// if (json.actions) json.actions = JSON.stringify(json.actions)
+
+		json.transactions = pack(json.transactions.map(({ actions }) => pack(actions)));
+	}
+	if (json.receivers) {
+		const numReceivers = json.receivers.length.toString()
+		json.receivers = HEADER_OFFSET + 
+			json.receivers.join(',').length.toString().padStart(HEADER_PAD, '0') +
+			'__' +
+			json.receivers.join(',');
+		json.receivers = json.receivers.substring(0, 4) + numReceivers.padStart(3, '0') + json.receivers.substring(7)	
+	}
+
 	const sig = await signer._signTypedData(domain, types, json);
-	return { sig, msg: json }
+	
+	const args = {
+		sig,
+		msg: json,
+	};
+	// console.log('\nargs\n', JSON.stringify(args, null, 4), '\n');
+	return args;
 };
 
 const keyPairFromEthSig = async (signer, json) => {
@@ -548,14 +599,15 @@ export const signAndSendTransactions = async ({ transactions }) => {
 	const { signer } = await getEthereum()
 	const { account, accountId } = await getNear()
 	
+	const receivers = transactions.map(({ receiverId }) => receiverId)
 	const transformedTxs = transactions.map(({ receiverId, actions }) => ({
-		receiver_id: receiverId,
 		actions: convertActions(actions, accountId, receiverId),
 	}))
 
 	const nonce = parseInt(await account.viewFunction(accountId, 'get_nonce'), 16).toString()
 	const args = await ethSignJson(signer, {
 		nonce,
+		receivers,
 		transactions: transformedTxs
 	});
 
@@ -570,6 +622,9 @@ export const signAndSendTransactions = async ({ transactions }) => {
 
 /// helpers
 
+
+/// helpers
+
 export const convertActions = (actions, accountId, receiverId) => actions.map((_action) => {
 
 	const { enum: type } = _action
@@ -580,11 +635,15 @@ export const convertActions = (actions, accountId, receiverId) => actions.map((_
         gas: (gas && gas.toString()) || undefined,
         public_key: (publicKey && pub2hex(publicKey)) || undefined,
         method_name: methodName,
-        args: (args && obj2hex(args)) || undefined,
-        code: (code && obj2hex(code)) || undefined,
+        args: args || undefined,
+        code: code || undefined,
         amount: (deposit && deposit.toString()) || undefined,
         permission: undefined,
     };
+
+	Object.keys(action).forEach((k) => {
+		if (action[k] === undefined) delete action[k]
+	})
 
     if (accessKey) {
         if (receiverId === accountId) {

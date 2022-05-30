@@ -181,37 +181,3 @@ export const functionCall = async ({
 		],
 	});
 };
-
-// export const signAndSendTransactions = async ({
-// 	transactions,
-// }: WalletMethodArgs) => {
-// 	if (!selector) {
-// 		throw new Error("functionCall error: selector not initialized");
-// 	}
-// 	if (!wallet) {
-// 		throw new Error("functionCall error: no wallet selected");
-// 	}
-
-// 	/// TODO conver transactions to wallet-selector type
-
-// 	return wallet.signAndSendTransactions({
-// 		transactions: [
-// 			{
-// 				receiverId: _contractId || contractId,
-// 				actions: [
-// 					{
-// 						type: "FunctionCall",
-// 						params: {
-// 							methodName,
-// 							args,
-// 							gas: gas?.toString() || "30000000000000",
-// 							deposit: attachedDeposit?.toString() || "0",
-// 						},
-// 					},
-// 				],
-// 			}
-// 		]
-// 	});
-// };
-
-
