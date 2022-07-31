@@ -1,6 +1,6 @@
 const fs = require("fs");
 const nearAPI = require("near-api-js");
-const getConfig = require("../../config");
+const getConfig = require("../config");
 const { nodeUrl, walletUrl, networkId, contractId, isBrowser = true } = getConfig(process.env.NEAR_ENV || 'testnet');
 
 const {

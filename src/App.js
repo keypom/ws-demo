@@ -5,7 +5,7 @@ import Form from './components/Form';
 import SignIn from './components/SignIn';
 import Messages from './components/Messages';
 import getConfig from './config.js';
-import { getSelector, getAccount, viewFunction, functionCall } from './utils/wallet-selector-compat.ts';
+import { getSelector, getAccount, viewFunction, functionCall } from './utils/wallet-selector/wallet-selector-compat.ts';
 
 const config = getConfig(process.env.NEAR_ENV || 'testnet');
 const { networkId, contractName } = config

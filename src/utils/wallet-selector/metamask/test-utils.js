@@ -8,7 +8,7 @@ const {
 	} }
 } = nearAPI;
 const { connection, keyStore, contractAccount } = require('./near-utils');
-const getConfig = require("../../config");
+const getConfig = require("../config");
 const {
 	networkId, contractId, gas,
 	NEW_ACCOUNT_AMOUNT,

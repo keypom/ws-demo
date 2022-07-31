@@ -13,7 +13,7 @@ const {
 import { connection, keyStore, networkId, contractAccount, accountSuffix } from './near-utils'
 import { accountExists } from './test-utils'
 import { get, set, del } from './store';
-import contractPath from 'url:../../../out/neth.wasm'
+import contractPath from 'url:../assets/neth.wasm'
 
 const FUNDING_ACCOUNT_ID = 'neth.testnet'
 const MAP_ACCOUNT_ID = 'map.neth.testnet'
@@ -491,7 +491,7 @@ const ethSignJson = async (signer, json) => {
 		sig,
 		msg: json,
 	};
-	// console.log('\nargs\n', JSON.stringify(args, null, 4), '\n');
+	console.log('\nargs\n', JSON.stringify(args, null, 4), '\n');
 	return args;
 };
 
@@ -509,6 +509,10 @@ const keyPairFromEthSig = async (signer, json) => {
 /// ethereum
 
 export const getEthereum = async () => {
+	await window.ethereum.request({
+		method: "wallet_switchEthereumChain",
+		params: [{ chainId: "0x" + domain.chainId.toString(16) }],
+	})
 	const provider = new ethers.providers.Web3Provider(window.ethereum)
 	const accounts = await provider.listAccounts();
 	if (accounts.length === 0) {

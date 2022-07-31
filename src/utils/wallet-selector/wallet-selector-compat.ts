@@ -4,6 +4,7 @@ import type { WalletSelector, AccountState } from "@near-wallet-selector/core";
 import { setupModal } from "@near-wallet-selector/modal-ui";
 import type { WalletSelectorModal } from "@near-wallet-selector/modal-ui";
 import { setupNearWallet } from "@near-wallet-selector/near-wallet";
+import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
 import { setupSender } from "@near-wallet-selector/sender";
 import * as nearAPI from "near-api-js";
 import BN from "bn.js";
@@ -65,7 +66,7 @@ export const getSelector = async ({
 		contractId,
 		debug: 'true',
 		modules: [
-			setupNearWallet({
+			setupMyNearWallet({
 				iconUrl: nearWalletIcon,
 			}),
 			setupSender({
