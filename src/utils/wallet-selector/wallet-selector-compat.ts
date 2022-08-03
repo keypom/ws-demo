@@ -63,12 +63,8 @@ export const getSelector = async ({
 		contractId,
 		debug: 'true',
 		modules: [
-			setupMyNearWallet({
-				iconUrl: nearWalletIcon,
-			}),
-			setupSender({
-				iconUrl: senderWalletIcon,
-			}),
+			setupMyNearWallet(),
+			setupSender(),
 			setupNeth()
 		],
 	});
