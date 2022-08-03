@@ -2019,7 +2019,7 @@
     "@lezer/lr" "^0.15.4"
     json5 "^2.2.1"
 
-"@near-wallet-selector/core@5.0.1", "@near-wallet-selector/core@v5.0.1":
+"@near-wallet-selector/core@5.0.1", "@near-wallet-selector/core@^5.0.1", "@near-wallet-selector/core@v5.0.1":
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@near-wallet-selector/core/-/core-5.0.1.tgz#9ed24914d975ff7bbad11feb52500aa9f6ce5527"
   integrity sha512-T2MN2N90I14Wpz5MYLt++Ot1P9I3Vfmld7kdlAVMw/xBuao9SAgrrgNoN6Ojt8xcrC/01cCW69LNBXwCNb1YqA==
@@ -6594,6 +6594,13 @@ nearley@^2.20.1:
     moo "^0.5.0"
     railroad-diagrams "^1.0.0"
     randexp "0.4.6"
+
+neth@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/neth/-/neth-0.0.4.tgz#8c07530f704d9944b9cf1651ea6e40fe8abae0e4"
+  integrity sha512-MLdAEf1tJFA9415cJzsWrR1ygYtD0G8Y6mNAxQzWaLL5JO76fauqiaN6twMSfK8E2rr37F5jJaseZOtEnhfY1Q==
+  dependencies:
+    "@near-wallet-selector/core" "^5.0.1"
 
 nice-try@^1.0.4:
   version "1.0.5"
