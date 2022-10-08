@@ -2019,7 +2019,14 @@
     "@lezer/lr" "^0.15.4"
     json5 "^2.2.1"
 
-"@near-wallet-selector/core@5.0.1", "@near-wallet-selector/core@^5.0.1", "@near-wallet-selector/core@v5.0.1":
+"@near-wallet-selector/core@7.0.3", "@near-wallet-selector/core@v7.0.3":
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/core/-/core-7.0.3.tgz#bf2df9f4709f47c9afc7a4bc56261f2d624d5d73"
+  integrity sha512-bggK3+axEpC1tu5+XJi9djEmVSNCCYF7nQkHje3NuBqD/0tfK4UmRn5+g95fs3Kxbi8fp6lh9eRWBtX3EnBSZQ==
+  dependencies:
+    rxjs "^7.5.5"
+
+"@near-wallet-selector/core@^5.0.1":
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@near-wallet-selector/core/-/core-5.0.1.tgz#9ed24914d975ff7bbad11feb52500aa9f6ce5527"
   integrity sha512-T2MN2N90I14Wpz5MYLt++Ot1P9I3Vfmld7kdlAVMw/xBuao9SAgrrgNoN6Ojt8xcrC/01cCW69LNBXwCNb1YqA==
@@ -2027,47 +2034,30 @@
     near-api-js "0.44.2"
     rxjs "~7.4.0"
 
-"@near-wallet-selector/modal-ui@^5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/modal-ui/-/modal-ui-5.0.1.tgz#8094f506f9fc8a4b485283a97f0d56065a79ae7e"
-  integrity sha512-cZqRVPxbLFujLhJRKPo4S9l+UefFG4phRLHl+KK65B4QF7louw2XKiKBE2TThZha0BS9gYGijkjvvwP+iS2iHA==
+"@near-wallet-selector/modal-ui@^7.0.3":
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/modal-ui/-/modal-ui-7.0.3.tgz#50e86874db92798256a40557b2c5a8291fdd1e59"
+  integrity sha512-VftKoABCud66pJETF4QLGRnLq4iWwKVPca3LarVVS4Rx0HGldAZjMQr+L4/C2UQ+kUEz9FQbYWKvuK9ef2rAcw==
   dependencies:
-    "@near-wallet-selector/core" "5.0.1"
-    near-api-js "0.44.2"
-    react "^17.0.2"
-    react-dom "^17.0.2"
-    rxjs "~7.4.0"
+    "@near-wallet-selector/core" "7.0.3"
+    react "18.2.0"
+    react-dom "18.2.0"
 
-"@near-wallet-selector/my-near-wallet@^5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/my-near-wallet/-/my-near-wallet-5.0.1.tgz#d082973790c164162a311f726261f2a263bc0629"
-  integrity sha512-+MB2g1/y0UedIK/sx+Ka1kq5Cc3yhOPSAJo66omWTrb3YJIWrq0e7Vl5fFAeFbm7reBgqVkZ7mSLwy9lXlS5Vw==
+"@near-wallet-selector/my-near-wallet@^7.0.3":
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/my-near-wallet/-/my-near-wallet-7.0.3.tgz#6f4b2bc238b0da7361a71518f2e403a8dc1fa0e5"
+  integrity sha512-1uOj5059njnaiuGIQ8QvXoKhdwgLz3H9N3Y15ulg828242Vn5iw/6LboR7AWJbI6IpTtGbvrrDqsYFAnyssmPw==
   dependencies:
-    "@near-wallet-selector/core" "5.0.1"
-    "@near-wallet-selector/wallet-utils" "5.0.1"
+    "@near-wallet-selector/core" "7.0.3"
+    "@near-wallet-selector/wallet-utils" "7.0.3"
+
+"@near-wallet-selector/wallet-utils@7.0.3":
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/wallet-utils/-/wallet-utils-7.0.3.tgz#4cc9ddc064dd88ed5c93588197c9a24702a12f74"
+  integrity sha512-ghkaqTkO4xmTLaBQSPoWciSMExIjav5fKalvyG+VNLfCrkRLglczdOk4J5mM5ozaQSi6iknGaSiVaX0wkMdkEw==
+  dependencies:
+    "@near-wallet-selector/core" "7.0.3"
     bn.js "^5.2.0"
-    near-api-js "0.44.2"
-    rxjs "~7.4.0"
-
-"@near-wallet-selector/sender@v5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/sender/-/sender-5.0.1.tgz#7a162202811a0d77c9730fc4a2f1d11859804253"
-  integrity sha512-dnmh8WBYmkstETIvQct1QDNU/z8souI3OU80nSvTAbbNrrmuOV6RnxAXoebsoy0Lk08MC5hTprQsnpBkyjNvNg==
-  dependencies:
-    "@near-wallet-selector/core" "5.0.1"
-    is-mobile "^3.0.0"
-    near-api-js "0.44.2"
-    rxjs "~7.4.0"
-
-"@near-wallet-selector/wallet-utils@5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/wallet-utils/-/wallet-utils-5.0.1.tgz#af41791b63ad669a9f4b739c951d2ccf56bb767e"
-  integrity sha512-4RJxSP3zzha0hZweXfFZrZIAL0Wzj5y7vi7ybsxcHzTVT/3xdKhCEGI816YQpC6BzZ5jdspS6ntLlKpXsBSkgg==
-  dependencies:
-    "@near-wallet-selector/core" "5.0.1"
-    bn.js "^5.2.0"
-    near-api-js "0.44.2"
-    rxjs "~7.4.0"
 
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
@@ -5344,11 +5334,6 @@ is-json@^2.0.1:
   resolved "https://registry.yarnpkg.com/is-json/-/is-json-2.0.1.tgz#6be166d144828a131d686891b983df62c39491ff"
   integrity sha1-a+Fm0USCihMdaGiRuYPfYsOUkf8=
 
-is-mobile@^3.0.0:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/is-mobile/-/is-mobile-3.1.1.tgz#3b9e48f40068e4ea2da411f5009779844ce8d6aa"
-  integrity sha512-RRoXXR2HNFxNkUnxtaBdGBXtFlUMFa06S0NUKf/LCF+MuGLu13gi9iBCkoEmc6+rpXuwi5Mso5V8Zf7mNynMBQ==
-
 is-npm@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/is-npm/-/is-npm-4.0.0.tgz"
@@ -7255,6 +7240,14 @@ rc@^1.2.7, rc@^1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-dom@18.2.0:
+  version "18.2.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"
+  integrity sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==
+  dependencies:
+    loose-envify "^1.1.0"
+    scheduler "^0.23.0"
+
 react-dom@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
@@ -7291,6 +7284,13 @@ react-test-renderer@^17.0.2:
     react-is "^17.0.2"
     react-shallow-renderer "^16.13.1"
     scheduler "^0.20.2"
+
+react@18.2.0:
+  version "18.2.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"
+  integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
+  dependencies:
+    loose-envify "^1.1.0"
 
 react@^17.0.2:
   version "17.0.2"
@@ -7539,6 +7539,13 @@ rxjs@6:
   dependencies:
     tslib "^1.9.0"
 
+rxjs@^7.5.5:
+  version "7.5.7"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.5.7.tgz#2ec0d57fdc89ece220d2e702730ae8f1e49def39"
+  integrity sha512-z9MzKh/UcOqB3i20H6rtrlaE/CgjLOvheWK/9ILrbhROGTweAi1BaFsTT9FbwZi5Trr1qNRs+MXkhmR06awzQA==
+  dependencies:
+    tslib "^2.1.0"
+
 rxjs@~7.4.0:
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.4.0.tgz#a12a44d7eebf016f5ff2441b87f28c9a51cebc68"
@@ -7611,6 +7618,13 @@ scheduler@^0.20.2:
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
+
+scheduler@^0.23.0:
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.23.0.tgz#ba8041afc3d30eb206a487b6b384002e4e61fdfe"
+  integrity sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==
+  dependencies:
+    loose-envify "^1.1.0"
 
 scrypt-js@3.0.1:
   version "3.0.1"
@@ -8227,6 +8241,11 @@ ts-mixer@^5.1.0:
 tslib@^1.8.1, tslib@^1.9.0:
   version "1.11.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.11.1.tgz"
+
+tslib@^2.1.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
+  integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
 
 tslib@~2.1.0:
   version "2.1.0"

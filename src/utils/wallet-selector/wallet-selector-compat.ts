@@ -64,7 +64,6 @@ export const getSelector = async ({
 		debug: 'true',
 		modules: [
 			setupMyNearWallet(),
-			setupSender(),
 			setupNeth()
 		],
 	});
