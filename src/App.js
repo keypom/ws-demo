@@ -9,7 +9,6 @@ import { getSelector, getAccount, viewFunction, functionCall } from './utils/wal
 
 const networkIdUrlParam = window.location.search.split('?network=')[1]
 const config = getConfig(networkIdUrlParam || 'mainnet');
-console.log(config)
 const { networkId, contractName } = config
 const SUGGESTED_DONATION = '0';
 const BOATLOAD_OF_GAS = Big(3).times(10 ** 13).toFixed();
