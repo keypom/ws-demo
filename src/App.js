@@ -85,8 +85,7 @@ const App = () => {
 		<main>
 			<header>
 				<h2>NETH Support</h2>
-				<p>This example app uses <a href="https://neardefi.github.io/neth/" target="_blank">NETH accounts</a>. You can sign in with MyNearWallet or use your <a href="https://neardefi.github.io/neth/" target="_blank">NETH Account</a>.</p>
-				<p>If you don't have a <a href="https://neardefi.github.io/neth/" target="_blank">NETH account</a>, you can set one up <a href="https://neardefi.github.io/neth/" target="_blank">here</a>.</p>
+				<p>This example app uses <a href="https://neardefi.github.io/neth/" target="_blank">NETH accounts</a>. You can sign in with MyNearWallet or use your <a href="https://neardefi.github.io/neth/" target="_blank">NETH Account</a>. If you don't have a <a href="https://neardefi.github.io/neth/" target="_blank">NETH account</a>, you can set one up <a href="https://neardefi.github.io/neth/" target="_blank">here</a>.</p>
 				<p>Interested in adding NETH support to your app? <a href="https://github.com/neardefi/neth" target="_blank">Click here</a>.</p>
 
 				<h2>Guest Book</h2>
