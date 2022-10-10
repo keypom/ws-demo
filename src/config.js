@@ -1,12 +1,14 @@
 const CONTRACT_NAME = process.env.CONTRACT_NAME || 'guest-book.testnet';
 
+/// WARNING HARDCODED testnet and mainnet contractName
+
 function getConfig(env) {
   switch(env) {
     case 'mainnet':
       return {
         networkId: 'mainnet',
         nodeUrl: 'https://rpc.mainnet.near.org',
-        contractName: CONTRACT_NAME,
+        contractName: 'guest-book.near',
         walletUrl: 'https://wallet.near.org',
         helperUrl: 'https://helper.mainnet.near.org'
       };
@@ -18,7 +20,7 @@ function getConfig(env) {
       return {
         networkId: 'testnet',
         nodeUrl: 'https://rpc.testnet.near.org',
-        contractName: CONTRACT_NAME,
+        contractName: 'guest-book.testnet',
         walletUrl: 'https://wallet.testnet.near.org',
         helperUrl: 'https://helper.testnet.near.org'
       };

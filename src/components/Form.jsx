@@ -24,10 +24,10 @@ export default function Form({ onSubmit, currentUser }) {
             id="donation"
             max={Big(currentUser.balance).div(10 ** 24)}
             min="0"
-            step="0.01"
+            step="0.0001"
             type="number"
           />
-          <span title="NEAR Tokens">Ⓝ</span>
+          <span title="NEAR Tokens">Ⓝ (min 0.0001)</span>
         </p>
         <button type="submit">
           Sign

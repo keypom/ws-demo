@@ -2,7 +2,6 @@
 import { setupWalletSelector } from "@near-wallet-selector/core";
 import { setupModal } from "@near-wallet-selector/modal-ui";
 import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
-import { setupSender } from "@near-wallet-selector/sender";
 import * as nearAPI from "near-api-js";
 import BN from "bn.js";
 import { nearWalletIcon, senderWalletIcon } from "./assets/icons";

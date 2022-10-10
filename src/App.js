@@ -7,7 +7,9 @@ import Messages from './components/Messages';
 import getConfig from './config.js';
 import { getSelector, getAccount, viewFunction, functionCall } from './utils/wallet-selector/wallet-selector-compat.ts';
 
-const config = getConfig(process.env.NEAR_ENV || 'testnet');
+const networkIdUrlParam = window.location.search.split('?network=')[1]
+const config = getConfig(networkIdUrlParam || 'mainnet');
+console.log(config)
 const { networkId, contractName } = config
 const SUGGESTED_DONATION = '0';
 const BOATLOAD_OF_GAS = Big(3).times(10 ** 13).toFixed();
@@ -82,7 +84,12 @@ const App = () => {
 	return (
 		<main>
 			<header>
-				<h1>NEAR Guest Book</h1>
+				<h2>NETH Support</h2>
+				<p>This example app uses <a href="https://neardefi.github.io/neth/" target="_blank">NETH accounts</a>. You can sign in with MyNearWallet or use your <a href="https://neardefi.github.io/neth/" target="_blank">NETH Account</a>.</p>
+				<p>If you don't have a <a href="https://neardefi.github.io/neth/" target="_blank">NETH account</a>, you can set one up <a href="https://neardefi.github.io/neth/" target="_blank">here</a>.</p>
+				<p>Interested in adding NETH support to your app? <a href="https://github.com/neardefi/neth" target="_blank">Click here</a>.</p>
+
+				<h2>Guest Book</h2>
 				{currentUser
 					? <button onClick={signOut}>Log out</button>
 					: <button onClick={signIn}>Log in</button>
