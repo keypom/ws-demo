@@ -2040,6 +2040,11 @@
   resolved "https://registry.yarnpkg.com/@lmdb/lmdb-win32-x64/-/lmdb-win32-x64-2.5.2.tgz#28f643fbc0bec30b07fbe95b137879b6b4d1c9c5"
   integrity sha512-zrBczSbXKxEyK2ijtbRdICDygRqWSRPpZMN5dD1T8VMEW5RIhIbwFWw2phDRXuBQdVDpSjalCIUMWMV2h3JaZA==
 
+"@metamask/detect-provider@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@metamask/detect-provider/-/detect-provider-2.0.0.tgz#4bc2795e5e6f7d8b84b2e845058d2f222c99917d"
+  integrity sha512-sFpN+TX13E9fdBDh9lvQeZdJn4qYoRb/6QF2oZZK/Pn559IhCFacPMU1rMuqyXoFQF3JSJfii2l98B87QDPeCQ==
+
 "@mischnic/json-sourcemap@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@mischnic/json-sourcemap/-/json-sourcemap-0.1.0.tgz#38af657be4108140a548638267d02a2ea3336507"
@@ -6623,10 +6628,10 @@ nearley@^2.20.1:
     railroad-diagrams "^1.0.0"
     randexp "0.4.6"
 
-neth@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/neth/-/neth-0.1.1.tgz#f933d058d3e444fc6bb370de7645f0c16554548f"
-  integrity sha512-L34Qli3/ctP1W+ByKu7ZBHJ1t6UepP2FPeNzYi1VeeBidmx4ShXQ7lWF1S0MJV+1dyVeNW0zCZs+R+J6jd2rmg==
+neth@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/neth/-/neth-0.2.1.tgz#b23081163fab414ead184beada80464e20c0a7a8"
+  integrity sha512-5YwjEz8/qyRt9vWpvCh5gF0RzZPIeMP4CS0cJPsuWhMw100sGU/Yq6xBoFQJq2YbJfoC5XL4JuWsHLnm2bfZeQ==
   dependencies:
     "@near-wallet-selector/core" "^6.0.1"
 
