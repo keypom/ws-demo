@@ -6623,10 +6623,10 @@ nearley@^2.20.1:
     railroad-diagrams "^1.0.0"
     randexp "0.4.6"
 
-neth@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/neth/-/neth-0.0.8.tgz#f6f65a720bc81bc7dbad7b95e96fae2e1a627696"
-  integrity sha512-ejUb2cvgr44DqzlPJqgKeTtAXExf8xZr9LvGSyZT7NnrRw3Pb4qu6CD8CgttdDqq9VpOTbGzsRUL4aYZruVl0A==
+neth@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/neth/-/neth-0.1.1.tgz#f933d058d3e444fc6bb370de7645f0c16554548f"
+  integrity sha512-L34Qli3/ctP1W+ByKu7ZBHJ1t6UepP2FPeNzYi1VeeBidmx4ShXQ7lWF1S0MJV+1dyVeNW0zCZs+R+J6jd2rmg==
   dependencies:
     "@near-wallet-selector/core" "^6.0.1"
 
