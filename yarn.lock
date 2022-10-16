@@ -2061,7 +2061,7 @@
   dependencies:
     rxjs "^7.5.5"
 
-"@near-wallet-selector/core@^7.1.0":
+"@near-wallet-selector/core@7.1.0", "@near-wallet-selector/core@^7.1.0":
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/@near-wallet-selector/core/-/core-7.1.0.tgz#158b64c63e1f179f91cf953befa7816ae277b5f3"
   integrity sha512-QUL6hwsqHMHEejJQuhrE9AzIJwwCZWOIDNvsH723zDDicscy4bxydUxL3BmTZqBEK09IqPVtpA5Us8dEReGljQ==
@@ -2077,20 +2077,20 @@
     react "18.2.0"
     react-dom "18.2.0"
 
-"@near-wallet-selector/my-near-wallet@^7.0.3":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/my-near-wallet/-/my-near-wallet-7.0.3.tgz#6f4b2bc238b0da7361a71518f2e403a8dc1fa0e5"
-  integrity sha512-1uOj5059njnaiuGIQ8QvXoKhdwgLz3H9N3Y15ulg828242Vn5iw/6LboR7AWJbI6IpTtGbvrrDqsYFAnyssmPw==
+"@near-wallet-selector/my-near-wallet@^7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/my-near-wallet/-/my-near-wallet-7.1.0.tgz#c64be84a34ae9c1bd390d5bdb74f2a5028dd1b53"
+  integrity sha512-g5XKy2DIRqixiTbDol+JWgS4SeF1wddTFtYx6xR3L4TMdmKh894TPCNXPs/hG2NkXzpGCFvU2NfxUKbuSWUGdQ==
   dependencies:
-    "@near-wallet-selector/core" "7.0.3"
-    "@near-wallet-selector/wallet-utils" "7.0.3"
+    "@near-wallet-selector/core" "7.1.0"
+    "@near-wallet-selector/wallet-utils" "7.1.0"
 
-"@near-wallet-selector/wallet-utils@7.0.3":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/wallet-utils/-/wallet-utils-7.0.3.tgz#4cc9ddc064dd88ed5c93588197c9a24702a12f74"
-  integrity sha512-ghkaqTkO4xmTLaBQSPoWciSMExIjav5fKalvyG+VNLfCrkRLglczdOk4J5mM5ozaQSi6iknGaSiVaX0wkMdkEw==
+"@near-wallet-selector/wallet-utils@7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/wallet-utils/-/wallet-utils-7.1.0.tgz#b5b66fe67b5825586ec3e0cda8e7e3b63b2011bd"
+  integrity sha512-fqK0vNJrNBFoWm3Atm2aD2j60ek4tBD+BtLJSkHLdLVZg3U4FEi0X7phDkEslUl+iCHQM/lWg/nQG58KC9Mvuw==
   dependencies:
-    "@near-wallet-selector/core" "7.0.3"
+    "@near-wallet-selector/core" "7.1.0"
     bn.js "^5.2.0"
 
 "@nodelib/fs.scandir@2.1.3":
