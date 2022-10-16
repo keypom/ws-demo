@@ -5,7 +5,7 @@ import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
 import * as nearAPI from "near-api-js";
 import BN from "bn.js";
 import { nearWalletIcon, senderWalletIcon } from "./assets/icons";
-import { setupNeth } from 'neth'
+import { setupKeypom } from '../../lib/lib/keypom'
 
 import './modal-ui.css'
 
@@ -63,9 +63,13 @@ export const getSelector = async ({
 		debug: 'true',
 		modules: [
 			setupMyNearWallet(),
-			setupNeth()
+			setupKeypom()
 		],
 	});
+
+	wallet = await selector.wallet('keypom')
+
+	// await wallet.getAccounts()
 
 	selector.store.observable.subscribe(async (state) => {
 		const newAccountId = state.accounts[0]?.accountId
