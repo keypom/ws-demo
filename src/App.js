@@ -38,10 +38,11 @@ const App = () => {
 		selectorRef.current = _selector;
 		setSelector(_selector)
 
-		setMessages(await viewFunction({
+		const messages = await viewFunction({
 			contractId: contractName,
 			methodName: 'getMessages',
-		}))
+		})
+		setMessages(messages.reverse())
 	};
 	useEffect(() => {
 		onMount();
@@ -66,10 +67,11 @@ const App = () => {
         donation.value = SUGGESTED_DONATION;
         fieldset.disabled = false;
         message.focus();
-		setMessages(await viewFunction({
+		const messages = await viewFunction({
 			contractId: contractName,
 			methodName: 'getMessages',
-		}))
+		})
+		setMessages(messages.reverse())
 	};
 
 	const signIn = () => {
@@ -85,16 +87,8 @@ const App = () => {
 	return (
 		<main>
 			<header>
-				<h2>NETH Support - Network: {networkId}</h2>
-				<p>Switch to <a
-					href={networkId === 'mainnet' ? window.location.href + '?network=testnet' : window.location.href.split('?')[0]}
-					onClick={() => localStorage.clear()}	
-				>
-					{networkId === 'mainnet' ? 'testnet' : 'mainnet'} by clicking here
-				</a>.</p>
-				<p>This example app uses <a href={nethURL} target="_blank">NETH accounts</a>. You can sign in with MyNearWallet or use your <a href={nethURL} target="_blank">NETH Account</a>. If you don't have a <a href={nethURL} target="_blank">NETH account</a>, you can set one up <a href={nethURL} target="_blank">here</a>.</p>
-				<p>Interested in adding NETH support to your app? <a href={nethURL} target="_blank">Click here</a>.</p>
-
+				<h2>Keypom - auto sign in demo</h2>
+				
 				<h2>Guest Book</h2>
 				{currentUser
 					? <button onClick={signOut}>Log out</button>
