@@ -2061,12 +2061,12 @@
   dependencies:
     rxjs "^7.5.5"
 
-"@near-wallet-selector/core@^7.1.0":
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/core/-/core-7.1.0.tgz#158b64c63e1f179f91cf953befa7816ae277b5f3"
-  integrity sha512-QUL6hwsqHMHEejJQuhrE9AzIJwwCZWOIDNvsH723zDDicscy4bxydUxL3BmTZqBEK09IqPVtpA5Us8dEReGljQ==
+"@near-wallet-selector/core@7.3.0", "@near-wallet-selector/core@^7.1.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/core/-/core-7.3.0.tgz#4cbd93067f1fd052acfe87edd7c58aed340cc50a"
+  integrity sha512-kmW3/taTfX3KjsXkaAbPtQUYTSpax5HY8aFE/66wlGgmm7PboEOPYys04PkG/f6SJ3UJoTn49Ek87C0eu5hSDA==
   dependencies:
-    rxjs "^7.5.5"
+    rxjs "^7.5.7"
 
 "@near-wallet-selector/modal-ui@^7.0.3":
   version "7.0.3"
@@ -2077,20 +2077,20 @@
     react "18.2.0"
     react-dom "18.2.0"
 
-"@near-wallet-selector/my-near-wallet@^7.0.3":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/my-near-wallet/-/my-near-wallet-7.0.3.tgz#6f4b2bc238b0da7361a71518f2e403a8dc1fa0e5"
-  integrity sha512-1uOj5059njnaiuGIQ8QvXoKhdwgLz3H9N3Y15ulg828242Vn5iw/6LboR7AWJbI6IpTtGbvrrDqsYFAnyssmPw==
+"@near-wallet-selector/my-near-wallet@^7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/my-near-wallet/-/my-near-wallet-7.3.0.tgz#e6ecbe5864aca60c76a55be69a6227b0005794f8"
+  integrity sha512-Eo+r+wQySKyTh9Aq60r7V1umjdJd8WkHyLyhk6O6jiYJeh9FLHKmssoJ23CeQZIP/bGyKeeBOU+/8kaFox9fiQ==
   dependencies:
-    "@near-wallet-selector/core" "7.0.3"
-    "@near-wallet-selector/wallet-utils" "7.0.3"
+    "@near-wallet-selector/core" "7.3.0"
+    "@near-wallet-selector/wallet-utils" "7.3.0"
 
-"@near-wallet-selector/wallet-utils@7.0.3":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/wallet-utils/-/wallet-utils-7.0.3.tgz#4cc9ddc064dd88ed5c93588197c9a24702a12f74"
-  integrity sha512-ghkaqTkO4xmTLaBQSPoWciSMExIjav5fKalvyG+VNLfCrkRLglczdOk4J5mM5ozaQSi6iknGaSiVaX0wkMdkEw==
+"@near-wallet-selector/wallet-utils@7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/wallet-utils/-/wallet-utils-7.3.0.tgz#2aca35e55b57681acd52b3cd93acf4866739e490"
+  integrity sha512-G502AecZqIXKcINpngeWMpbEoxXEyt/z9qpszhOrG9bnC6ecKMY+hth3SzUDI9etyx01Hc39J3Q/74t1worQCg==
   dependencies:
-    "@near-wallet-selector/core" "7.0.3"
+    "@near-wallet-selector/core" "7.3.0"
     bn.js "^5.2.0"
 
 "@nodelib/fs.scandir@2.1.3":
@@ -8150,7 +8150,7 @@ rxjs@6:
   dependencies:
     tslib "^1.9.0"
 
-rxjs@^7.5.5:
+rxjs@^7.5.5, rxjs@^7.5.7:
   version "7.5.7"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.5.7.tgz#2ec0d57fdc89ece220d2e702730ae8f1e49def39"
   integrity sha512-z9MzKh/UcOqB3i20H6rtrlaE/CgjLOvheWK/9ILrbhROGTweAi1BaFsTT9FbwZi5Trr1qNRs+MXkhmR06awzQA==
