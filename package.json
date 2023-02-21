@@ -3,18 +3,25 @@
   "version": "1.0.0",
   "license": "(MIT AND Apache-2.0)",
   "scripts": {
-    "start": "cd frontend && npm run start",
-    "deploy": "cd contract && npm run deploy",
-    "build": "npm run build:contract && npm run build:web",
-    "build:web": "cd frontend && npm run build",
-    "build:contract": "cd contract && npm run build",
-    "test": "npm run build:contract && npm run test:unit && npm run test:integration",
-    "test:unit": "cd contract && npm test",
-    "test:integration": "cd integration-tests && npm test -- -- \"./contract/build/contract.wasm\"",
-    "postinstall": "cd frontend && npm install && cd .. && cd integration-tests && npm install && cd .. && cd contract && npm install"
+    "start:all": "yarn start:coin-flip && yarn start:counter && yarn start:donation && yarn start:guest-book && yarn start:hello-near",
+    "start:coin-flip": "cd coin-flip && npm run start",
+    "start:counter": "cd counter && npm run start",
+    "start:donation": "cd donation && npm run start",
+    "start:guest-book": "cd guest-book && npm run start",
+    "start:hello-near": "cd hello-near && npm run start",
+
+    "install-deps:all": "yarn install-deps:coin-flip && yarn install-deps:counter && yarn install-deps:donation && yarn install-deps:guest-book && yarn install-deps:hello-near",
+    "install-deps:coin-flip": "cd coin-flip && npm install",
+    "install-deps:counter": "cd counter && npm install",
+    "install-deps:donation": "cd donation && npm install",
+    "install-deps:guest-book": "cd guest-book && npm install",
+    "install-deps:hello-near": "cd hello-near && npm install",
+
+    "create-trial-drop": "node ./scripts/create-trial-drop.js"
   },
   "devDependencies": {
-    "near-cli": "^3.3.0"
+    "near-cli": "^3.3.0",
+    "keypom-js": "^1.4.0-rc.1"
   },
   "dependencies": {}
 }

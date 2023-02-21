@@ -3,12 +3,11 @@
 GREEN='\033[1;32m'
 NC='\033[0m' # No Color
 
-CONTRACT_DIRECTORY=../contract
-DEV_ACCOUNT_FILE="${CONTRACT_DIRECTORY}/neardev/dev-account.env"
+CONTRACT_ACCOUNT_FILE="contract.env"
 
 start () {
   echo The app is starting!
-  env-cmd -f $DEV_ACCOUNT_FILE parcel index.html --open
+  env-cmd -f $CONTRACT_ACCOUNT_FILE parcel index.html --open
 }
 
 alert () {
@@ -18,7 +17,7 @@ alert () {
   echo "======================================================"
 }
 
-if [ -f "$DEV_ACCOUNT_FILE" ]; then
+if [ -f "$CONTRACT_ACCOUNT_FILE" ]; then
   start
 else
   alert
