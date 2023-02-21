@@ -36,12 +36,13 @@ export class Wallet {
 
   // To be called when the website loads
   async startUp() {
+    console.log("HELLLOOO")
     this.walletSelector = await setupWalletSelector({
       network: this.network,
       modules: [
-        setupMyNearWallet({ iconUrl: MyNearIconUrl }, 
-          setupLedger({ iconUrl: LedgerIconUrl }),
-          setupKeypom({ desiredUrl: "/keypom-url/", networkId: this.network}))
+        setupMyNearWallet({ iconUrl: MyNearIconUrl }), 
+        setupLedger({ iconUrl: LedgerIconUrl }),
+        setupKeypom({ desiredUrl: "/keypom-url/", networkId: this.network})
       ],
     });
 
