@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { initKeypom, createDrop, getDrops, claimTrialAccountDrop, createTrialAccountDrop } = require("keypom-js");
 const { readFileSync } = require('fs');
 
@@ -25,7 +26,7 @@ async function createTrialAccount(){
         'hello-near.examples.keypom.testnet'
     ]
 
-    const newUserName = "benji-demo-thursday"
+    const newUserName = "demo-" + Date.now()
 
     const {keys: {secretKeys: trialSecretKeys, publicKeys: trialPublicKeys}} 
     = await createTrialAccountDrop({
@@ -41,10 +42,10 @@ async function createTrialAccount(){
     })
     
     const newAccountId = `${newUserName}.linkdrop-beta.keypom.testnet`
-	await claimTrialAccountDrop({
-        secretKey: trialSecretKeys[0],
-        desiredAccountId: newAccountId,
-    })
+	// await claimTrialAccountDrop({
+    //     secretKey: trialSecretKeys[0],
+    //     desiredAccountId: newAccountId,
+    // })
     
     console.log(`
 	
@@ -57,6 +58,13 @@ async function createTrialAccount(){
 	`)
 
 	console.log(`/keypom-url/${newAccountId}#${trialSecretKeys[0]}`)
+
+
+	console.log(`
+    
+    localhost:3000/claim/v2.keypom.testnet#${trialSecretKeys[0]}
+    
+    `)
 }
 
 createTrialAccount();
