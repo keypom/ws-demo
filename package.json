@@ -9,6 +9,7 @@
     "start:donation": "cd donation && npm run start",
     "start:guest-book": "cd guest-book && npm run start",
     "start:hello-near": "cd hello-near && npm run start",
+    "start:near-social": "cd near-social/viewer && npm run start",
 
     "install-deps:all": "yarn install-deps:coin-flip && yarn install-deps:counter && yarn install-deps:donation && yarn install-deps:guest-book && yarn install-deps:hello-near",
     "install-deps:coin-flip": "cd coin-flip && npm install",
@@ -16,12 +17,13 @@
     "install-deps:donation": "cd donation && npm install",
     "install-deps:guest-book": "cd guest-book && npm install",
     "install-deps:hello-near": "cd hello-near && npm install",
+    "install-deps:near-social": "cd near-social/viewer && npm install && cd ../VM && npm install",
 
     "create-trial-drop": "node ./scripts/create-trial-drop.js"
   },
   "devDependencies": {
     "near-cli": "^3.3.0",
-    "keypom-js": "^1.4.0-rc.1"
+    "keypom-js": "^1.4.0-rc.2"
   },
   "dependencies": {}
 }

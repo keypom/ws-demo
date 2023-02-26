@@ -25,7 +25,7 @@ async function createTrialAccount(){
         'hello-near.examples.keypom.testnet'
     ]
 
-    const newUserName = "benji-demo-thursday"
+    const newUserName = "chetna"
 
     const {keys: {secretKeys: trialSecretKeys, publicKeys: trialPublicKeys}} 
     = await createTrialAccountDrop({
@@ -37,7 +37,9 @@ async function createTrialAccount(){
         numKeys: 1,
         config: {
             dropRoot: "linkdrop-beta.keypom.testnet"
-        }
+        },
+        repayAmountNEAR: 5,
+        repayTo: "dennis.near"
     })
     
     const newAccountId = `${newUserName}.linkdrop-beta.keypom.testnet`
