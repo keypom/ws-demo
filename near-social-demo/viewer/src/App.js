@@ -9,7 +9,7 @@ import EditorPage from "./pages/EditorPage";
 import ViewPage from "./pages/ViewPage";
 import { setupModal } from "@near-wallet-selector/modal-ui";
 import EmbedPage from "./pages/EmbedPage";
-import { useAccount, useInitNear, useNear, utils } from "../../VM/dist/index";
+import { useAccount, useInitNear, useNear, utils } from "near-social-vm";
 import Big from "big.js";
 import { NavigationWrapper } from "./components/navigation/NavigationWrapper";
 import { NetworkId, Widgets } from "./data/widgets";

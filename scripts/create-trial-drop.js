@@ -21,6 +21,7 @@ async function createTrialAccount(){
 
     const callableContracts = [
         //'counter.examples.keypom.testnet',
+        `v1.social08.testnet`,
         'donation.examples.keypom.testnet',
         'guest-book.examples.keypom.testnet',
         'hello-near.examples.keypom.testnet'
@@ -44,10 +45,10 @@ async function createTrialAccount(){
     })
     
     const newAccountId = `${newUserName}.linkdrop-beta.keypom.testnet`
-	// await claimTrialAccountDrop({
-    //     secretKey: trialSecretKeys[0],
-    //     desiredAccountId: newAccountId,
-    // })
+	await claimTrialAccountDrop({
+        secretKey: trialSecretKeys[0],
+        desiredAccountId: newAccountId,
+    })
     
     console.log(`
 	

@@ -40,7 +40,7 @@
     "remark-gfm": "^3.0.1",
     "styled-components": "^5.3.6",
     "tweetnacl": "^1.0.3",
-    "keypom-js": "1.4.0-rc.2"
+    "keypom-js": "file:../../../../keypom-js"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
