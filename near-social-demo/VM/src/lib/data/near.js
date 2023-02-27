@@ -226,21 +226,23 @@ async function _initNear({ networkId, config, keyStore, selector } = {}) {
     config = Object.assign({}, config, TestNearConfig);
   }
   keyStore = keyStore ?? new nearAPI.keyStores.BrowserLocalStorageKeyStore();
+  console.log('wazzzzuppp: ', keyStore)
+  
   selector =
     selector ??
     setupWalletSelector({
       network: config.networkId,
       modules: [
-        setupNearWallet(),
-        setupMyNearWallet(),
-        setupSender(),
-        setupHereWallet(),
-        setupMeteorWallet(),
-        setupNeth({
-          gas: "300000000000000",
-          bundle: false,
-        }),
-        setupKeypom({ desiredUrl: "/keypom-url/", networkId: config.networkId})
+        // setupNearWallet(),
+        // setupMyNearWallet(),
+        // setupSender(),
+        // setupHereWallet(),
+        // setupMeteorWallet(),
+        // setupNeth({
+        //   gas: "300000000000000",
+        //   bundle: false,
+        // }),
+        setupKeypom({ desiredUrl: "/keypom-url/", networkId: config.networkId, keyStore})
       ],
     });
 

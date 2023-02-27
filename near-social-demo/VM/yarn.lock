@@ -2473,10 +2473,10 @@ bootstrap@^5.2.1:
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.2.3.tgz#54739f4414de121b9785c5da3c87b37ff008322b"
   integrity sha512-cEKPM+fwb3cT8NzQZYEu4HilJ3anCrWqh3CHAok1p9jXqMPsPTBhU25fBckEJHJ/p+tTxTFTsFQGM+gaHpi3QQ==
 
-borsh@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/borsh/-/borsh-0.6.0.tgz#a7c9eeca6a31ca9e0607cb49f329cb659eb791e1"
-  integrity sha512-sl5k89ViqsThXQpYa9XDtz1sBl3l1lI313cFUY1HKr+wvMILnb+58xpkqTNrYbelh99dY7K8usxoCusQmqix9Q==
+borsh@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/borsh/-/borsh-0.7.0.tgz#6e9560d719d86d90dc589bca60ffc8a6c51fec2a"
+  integrity sha512-CLCsZGIBCFnPtkNnieW/a8wmreDmfUtjU2m9yHrzPXIlNbqVs0AQrSatSG6vdNYUqdc83tkQi2eHfF98ubzQLA==
   dependencies:
     bn.js "^5.2.0"
     bs58 "^4.0.0"
@@ -5092,15 +5092,17 @@ jsprim@^1.2.2:
     json-schema "0.4.0"
     verror "1.10.0"
 
-"keypom-js@file:../../../../keypom-js":
-  version "1.3.6-rc.1"
+keypom-js@^1.4.0-rc.3:
+  version "1.4.0-rc.3"
+  resolved "https://registry.yarnpkg.com/keypom-js/-/keypom-js-1.4.0-rc.3.tgz#b3ea6a8dcc03d6136d54d00ae806c70db2d8c6f2"
+  integrity sha512-/BH1zuIKU/Ptph4sDVBi9MiyFnOlMUT4ZMFfUNq2OkWTlZpRfxoAZTH6lHZeHXgT94ETy6O1IAhLhIhjEWWEjQ==
   dependencies:
     "@near-wallet-selector/core" "^7.5.0"
     "@types/react" "^18.0.26"
     ava "^4.3.3"
     bn.js "^5.2.1"
     dotenv "^16.0.3"
-    near-api-js "^0.44.2"
+    near-api-js "^0.45.1"
     near-seed-phrase "^0.2.0"
     typescript "^4.8.4"
 
@@ -5975,13 +5977,13 @@ nanoid@3.3.4, nanoid@^3.3.4:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.4.tgz#730b67e3cd09e2deacf03c027c81c9d9dbc5e8ab"
   integrity sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==
 
-near-api-js@^0.44.2:
-  version "0.44.2"
-  resolved "https://registry.yarnpkg.com/near-api-js/-/near-api-js-0.44.2.tgz#e451f68f2c56bd885c7b918db5818a3e6e9423d0"
-  integrity sha512-eMnc4V+geggapEUa3nU2p8HSHn/njtloI4P2mceHQWO8vDE1NGpnAw8FuTBrLmXSgIv9m6oocgFc9t3VNf5zwg==
+near-api-js@^0.45.1:
+  version "0.45.1"
+  resolved "https://registry.yarnpkg.com/near-api-js/-/near-api-js-0.45.1.tgz#0f0a4b378758a2f1b32555399d7356da73d0ef27"
+  integrity sha512-QyPO/vjvMFlcMO1DCpsqzmnSqPIyHsjK1Qi4B5ZR1cJCIWMkqugDF/TDf8FVQ85pmlcYeYwfiTqKanKz+3IG0A==
   dependencies:
     bn.js "5.2.0"
-    borsh "^0.6.0"
+    borsh "^0.7.0"
     bs58 "^4.0.0"
     depd "^2.0.0"
     error-polyfill "^0.1.3"
@@ -6948,9 +6950,9 @@ raw-body@2.5.1:
     unpipe "1.0.0"
 
 react-bootstrap-typeahead@^6.0.0:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/react-bootstrap-typeahead/-/react-bootstrap-typeahead-6.0.1.tgz#3e57a73f6a2eb7eb4570b03931d15b09d4eaa19e"
-  integrity sha512-zYGQzBaYvCUkUCxSOgye1pizpP8f7AvoxwPuZXwI0/rljFrAAc1XNUxJ7bttIoHt77TJYCtZXx0ARoUEkRQrQg==
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/react-bootstrap-typeahead/-/react-bootstrap-typeahead-6.0.2.tgz#bad250f5912eb951db2d8e7a29286c5f044bd333"
+  integrity sha512-795YNvGZGi6VLfzZPgEbtmnLRxNkJlMYGDnegWO+OH5aBXvDDVxWwQN1XJdnIGrosJIOsB2ibwsRVe8fmqV0EQ==
   dependencies:
     "@babel/runtime" "^7.14.6"
     "@popperjs/core" "^2.10.2"

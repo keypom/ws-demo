@@ -22,6 +22,7 @@ async function createTrialAccount(){
     const callableContracts = [
         //'counter.examples.keypom.testnet',
         `v1.social08.testnet`,
+        `v2.keypom.testnet`,
         'donation.examples.keypom.testnet',
         'guest-book.examples.keypom.testnet',
         'hello-near.examples.keypom.testnet'

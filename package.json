@@ -3,21 +3,24 @@
   "version": "1.0.0",
   "license": "(MIT AND Apache-2.0)",
   "scripts": {
-    "start:all": "yarn start:coin-flip && yarn start:counter && yarn start:donation && yarn start:guest-book && yarn start:hello-near",
-    "start:coin-flip": "cd coin-flip && npm run start",
-    "start:counter": "cd counter && npm run start",
-    "start:donation": "cd donation && npm run start",
-    "start:guest-book": "cd guest-book && npm run start",
-    "start:hello-near": "cd hello-near && npm run start",
-    "start:near-social": "yarn build:near-social && cd near-social-demo/viewer && npm run start",
+    "start:all": "yarn start:coin-flip && yarn start:counter && yarn start:donation && yarn start:guest-book && yarn start:hello-near && yarn start:keypom-app && yarn start:near-social",
+    "start:coin-flip": "cd coin-flip && yarn start --port 3000",
+    "start:counter": "cd counter && yarn start --port 3001",
+    "start:donation": "cd donation && yarn start --port 3002",
+    "start:guest-book": "cd guest-book && yarn start --port 3003",
+    "start:hello-near": "cd hello-near && yarn start --port 3004",
+    "start:keypom-app": "cd keypom-app && yarn dev --port 3005",
+    "start:near-social": "yarn build:near-social && cd near-social-demo/viewer && yarn start --port 3006",
     "build:near-social": "cd near-social-demo/VM && yarn build",
 
-    "install-deps:all": "yarn install-deps:coin-flip && yarn install-deps:counter && yarn install-deps:donation && yarn install-deps:guest-book && yarn install-deps:hello-near",
-    "install-deps:coin-flip": "cd coin-flip && npm install",
-    "install-deps:counter": "cd counter && npm install",
-    "install-deps:donation": "cd donation && npm install",
-    "install-deps:guest-book": "cd guest-book && npm install",
-    "install-deps:hello-near": "cd hello-near && npm install",
+    "install-deps:all": "yarn install-deps:coin-flip && yarn install-deps:counter && yarn install-deps:donation && yarn install-deps:guest-book && yarn install-deps:hello-near && yarn install-deps:keypom-app && yarn install-deps:near-social",
+    "install-deps:coin-flip": "cd coin-flip && yarn install",
+    "install-deps:counter": "cd counter && yarn install",
+    "install-deps:donation": "cd donation && yarn install",
+    "install-deps:guest-book": "cd guest-book && yarn install",
+    "install-deps:hello-near": "cd hello-near && yarn install",
+    "install-deps:keypom-app": "cd keypom-app && yarn install",
+    
     "install-deps:near-social": "yarn install-deps:near-social:viewer && yarn install-deps:near-social:vm",
     "install-deps:near-social:viewer": "cd near-social-demo/viewer && yarn install",
     "install-deps:near-social:vm": "cd near-social-demo/vm && yarn install",
@@ -26,7 +29,7 @@
   },
   "devDependencies": {
     "near-cli": "^3.3.0",
-    "keypom-js": "^1.4.0-rc.2"
+    "keypom-js": "^1.4.0-rc.3"
   },
   "dependencies": {}
 }
