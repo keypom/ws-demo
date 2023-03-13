@@ -1610,10 +1610,10 @@ json-buffer@3.0.0:
   resolved "https://registry.yarnpkg.com/json-buffer/-/json-buffer-3.0.0.tgz#5b1f397afc75d677bde8bcfc0e47e1f9a3d9a898"
   integrity sha512-CuUqjv0FUZIdXkHPI8MezCnFCdaTAacej1TZYulLoAg1h/PhwkdXFN4V/gzY4g+fMBCOV2xF+rp7t2XD2ns/NQ==
 
-keypom-js@^1.4.0-rc.1:
-  version "1.4.0-rc.1"
-  resolved "https://registry.yarnpkg.com/keypom-js/-/keypom-js-1.4.0-rc.1.tgz#d07e28a5220f9669698d48bd217f87a4177ba75a"
-  integrity sha512-d4zoMxJWp4TQbwjNDUMet7fGnVEuZVFmk62kRh7L22NKvWZy/EZ6xQzIIxQN/ZdeL8E2lhF0/OHKYO5wFfvxww==
+keypom-js@^1.4.0-rc.5:
+  version "1.4.0-rc.5"
+  resolved "https://registry.yarnpkg.com/keypom-js/-/keypom-js-1.4.0-rc.5.tgz#a338a83bcfde0fbb5d07567c948313a69a032a57"
+  integrity sha512-ynvrBfw17i7V6U64Z0tLZN2igMD6M0PV5p09DmRL5NjcDaKs8P0V70yo3cFndBa5IimDPviFM+lhrAfMGCZLug==
   dependencies:
     "@near-wallet-selector/core" "^7.5.0"
     "@types/react" "^18.0.26"
