@@ -23,7 +23,7 @@ html {
     color: var(--bg);
   }
 
-  @media (prefers-color-scheme: dark) {
+  @media (prefers-color-scheme: light) {
     --bg: #25282A;
     --fg: #fff;
     --secondary: var(--blue);
