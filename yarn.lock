@@ -169,10 +169,10 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-6.10.1.tgz#5bd16082261d7364eabb511c788f00937dac588d"
   integrity sha512-z+ILK8Q3y+nfUl43ctCPuR4Y2bIxk/ooCQFwZxhtci1EhAtMDzMAx2W25qx8G1PPL9UUOdnUax19+F0OjXoj4w==
 
-"@near-wallet-selector/core@^7.5.0":
-  version "7.8.1"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/core/-/core-7.8.1.tgz#9101aaeb1a026bb2ed71793f2b51866f560168be"
-  integrity sha512-BS/dg42fG8/PcC2PkYkh98kriAqkvfIbS/n9lm72zl6UwHBkVmiK/wniAZPwrXijzLLM04mFg1/DEd1w8jf2Dg==
+"@near-wallet-selector/core@^7.9.1":
+  version "7.9.1"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/core/-/core-7.9.1.tgz#d13d20724bd105e85b141bb2c7f35f4c07a37cad"
+  integrity sha512-BJGsTK0snZAU1Je+W9TFJG5KW+jk+Ots9LuxsALZ/wZpqSeGT+w4xw36TZt3QsEm+I84im1+L+PIIW/bM2A9rQ==
   dependencies:
     rxjs "^7.8.0"
 
@@ -563,6 +563,15 @@ borsh@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/borsh/-/borsh-0.6.0.tgz#a7c9eeca6a31ca9e0607cb49f329cb659eb791e1"
   integrity sha512-sl5k89ViqsThXQpYa9XDtz1sBl3l1lI313cFUY1HKr+wvMILnb+58xpkqTNrYbelh99dY7K8usxoCusQmqix9Q==
+  dependencies:
+    bn.js "^5.2.0"
+    bs58 "^4.0.0"
+    text-encoding-utf-8 "^1.0.2"
+
+borsh@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/borsh/-/borsh-0.7.0.tgz#6e9560d719d86d90dc589bca60ffc8a6c51fec2a"
+  integrity sha512-CLCsZGIBCFnPtkNnieW/a8wmreDmfUtjU2m9yHrzPXIlNbqVs0AQrSatSG6vdNYUqdc83tkQi2eHfF98ubzQLA==
   dependencies:
     bn.js "^5.2.0"
     bs58 "^4.0.0"
@@ -1610,17 +1619,17 @@ json-buffer@3.0.0:
   resolved "https://registry.yarnpkg.com/json-buffer/-/json-buffer-3.0.0.tgz#5b1f397afc75d677bde8bcfc0e47e1f9a3d9a898"
   integrity sha512-CuUqjv0FUZIdXkHPI8MezCnFCdaTAacej1TZYulLoAg1h/PhwkdXFN4V/gzY4g+fMBCOV2xF+rp7t2XD2ns/NQ==
 
-keypom-js@^1.4.0-rc.1:
-  version "1.4.0-rc.1"
-  resolved "https://registry.yarnpkg.com/keypom-js/-/keypom-js-1.4.0-rc.1.tgz#d07e28a5220f9669698d48bd217f87a4177ba75a"
-  integrity sha512-d4zoMxJWp4TQbwjNDUMet7fGnVEuZVFmk62kRh7L22NKvWZy/EZ6xQzIIxQN/ZdeL8E2lhF0/OHKYO5wFfvxww==
+keypom-js@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/keypom-js/-/keypom-js-1.4.0.tgz#9f5684267a6f874bbbdc5914c5221b29c63bcfb8"
+  integrity sha512-CkaYRA5Jr0cA1lxzHD1teaXQnQ4BX4j+/ohsU+8Q1MvBq4Mr9L/8C5rI4YMwViZoeYLZZSeJ8tsPWwxugFzHag==
   dependencies:
-    "@near-wallet-selector/core" "^7.5.0"
+    "@near-wallet-selector/core" "^7.9.1"
     "@types/react" "^18.0.26"
     ava "^4.3.3"
     bn.js "^5.2.1"
     dotenv "^16.0.3"
-    near-api-js "^0.44.2"
+    near-api-js "^0.45.1"
     near-seed-phrase "^0.2.0"
     react "^18.2.0"
     react-dom "18.2.0"
@@ -1829,6 +1838,23 @@ near-api-js@^0.44.2:
   dependencies:
     bn.js "5.2.0"
     borsh "^0.6.0"
+    bs58 "^4.0.0"
+    depd "^2.0.0"
+    error-polyfill "^0.1.3"
+    http-errors "^1.7.2"
+    js-sha256 "^0.9.0"
+    mustache "^4.0.0"
+    node-fetch "^2.6.1"
+    text-encoding-utf-8 "^1.0.2"
+    tweetnacl "^1.0.1"
+
+near-api-js@^0.45.1:
+  version "0.45.1"
+  resolved "https://registry.yarnpkg.com/near-api-js/-/near-api-js-0.45.1.tgz#0f0a4b378758a2f1b32555399d7356da73d0ef27"
+  integrity sha512-QyPO/vjvMFlcMO1DCpsqzmnSqPIyHsjK1Qi4B5ZR1cJCIWMkqugDF/TDf8FVQ85pmlcYeYwfiTqKanKz+3IG0A==
+  dependencies:
+    bn.js "5.2.0"
+    borsh "^0.7.0"
     bs58 "^4.0.0"
     depd "^2.0.0"
     error-polyfill "^0.1.3"
