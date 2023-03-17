@@ -12,7 +12,10 @@ interface ExistingWalletProps {
   claimErrorText: string;
   message?: string;
   label?: string;
+  buttonText?: string;
   noBackIcon?: boolean;
+  inputRightAddonText?: string;
+  inputPlaceholder?: string;
 }
 
 export const ExistingWallet = ({
@@ -23,7 +26,10 @@ export const ExistingWallet = ({
   claimErrorText,
   message = 'Send to existing wallet',
   label = 'Your wallet address',
+  buttonText = 'Send',
+  inputPlaceholder = 'yourname.near',
   noBackIcon = false,
+  inputRightAddonText,
 }: ExistingWalletProps) => {
   const [walletAddress, setWalletAddress] = useState('');
   return (
@@ -42,9 +48,11 @@ export const ExistingWallet = ({
         </Text>
       </Center>
       <TextInput
+        errorMessage={claimErrorText}
         label={label}
         mb="5"
-        placeholder="yourname.near"
+        placeholder={inputPlaceholder}
+        rightAddOnText={inputRightAddonText}
         value={walletAddress}
         onChange={(e) => {
           setWalletAddress(e.target.value);
@@ -63,10 +71,9 @@ export const ExistingWallet = ({
             await handleSubmit(walletAddress);
           }}
         >
-          Send
+          {buttonText}
         </Button>
       )}
-      {claimErrorText !== undefined && <Text variant="error">{claimErrorText}</Text>}
     </>
   );
 };

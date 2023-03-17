@@ -9,7 +9,9 @@ import { setupNearWallet } from '@near-wallet-selector/near-wallet';
 import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet';
 import { setupKeypom } from 'keypom-js';
 
-const NETWORK_ID = process.env.NETWORK_ID ?? 'testnet';
+import { KEYPOM_OPTIONS } from './keypom';
+
+const NETWORK_ID = process.env.REACT_APP_NETWORK_ID ?? 'testnet';
 const CONTRACT_ID = process.env.REACT_APP_CONTRACT_ID ?? 'v2.keypom.testnet';
 
 export class NearWalletSelector {
@@ -24,7 +26,12 @@ export class NearWalletSelector {
       modules: [
         setupNearWallet(),
         setupMyNearWallet(),
-        setupKeypom({ desiredUrl: '/keypom-url/', networkId: NETWORK_ID as NetworkId }),
+        setupKeypom({
+          desiredUrl: 'http://localhost:3030/#',
+          networkId: NETWORK_ID as NetworkId,
+          contractId: CONTRACT_ID,
+          modalOptions: KEYPOM_OPTIONS,
+        }),
       ],
     });
     const _modal = setupModal(_selector, { contractId: CONTRACT_ID, theme: 'light' });

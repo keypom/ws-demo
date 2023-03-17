@@ -7,16 +7,10 @@ import { DropBox } from '@/components/DropBox';
 import { useClaimForm } from '../ClaimFormContext';
 
 export const ClaimTicketDetails = () => {
-  const { nftImage, title, giftType, tokens } = useClaimForm();
+  const { nftImage, title, description, giftType, tokens } = useClaimForm();
   return (
     <>
-      <Box
-        borderRadius={{ base: '5xl', md: '6xl' }}
-        h={giftType === DROP_TYPE.NFT ? { base: '7.5rem', md: '11.25rem' } : {}}
-        mb={{ base: '6', md: '8' }}
-        position="relative"
-        w={{ base: '7.5rem', md: '11.25rem' }}
-      >
+      <Box>
         {giftType === DROP_TYPE.NFT ? (
           <AvatarImage altName="NFT image" imageSrc={nftImage} />
         ) : (
@@ -30,14 +24,25 @@ export const ClaimTicketDetails = () => {
       <Text
         color="gray.800"
         fontWeight="500"
-        maxH="300px"
+        maxH="100px"
         mb={{ base: '2', md: '3' }}
-        overflowY="scroll"
+        overflowY="auto"
         size={{ base: 'xl', md: '2xl' }}
         textAlign="center"
       >
         {title}
       </Text>
+      {description?.length > 0 && (
+        <Text
+          color="gray.600"
+          maxH="200px"
+          overflowY="auto"
+          size={{ base: 'sm', md: 'base' }}
+          style={{ marginBottom: 16 }}
+        >
+          {description}
+        </Text>
+      )}
     </>
   );
 };

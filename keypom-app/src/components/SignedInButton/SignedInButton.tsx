@@ -3,7 +3,6 @@ import {
   Button,
   Center,
   Flex,
-  Link,
   Menu,
   MenuButton,
   MenuItem,
@@ -19,7 +18,7 @@ import { toYocto } from '@/utils/toYocto';
 import { truncateAddress } from '@/utils/truncateAddress';
 import { formatAmount } from '@/utils/formatAmount';
 
-import { DropIcon, NearLogoIcon, SignOutIcon } from '../Icons';
+import { KeyIcon, NearIcon, SignOutIcon } from '../Icons';
 
 export const SignedInButton = () => {
   const [showAll, setShowAll] = useBoolean(false);
@@ -93,7 +92,7 @@ export const SignedInButton = () => {
               borderBottom="1px solid"
               borderBottomColor="gray.100"
               closeOnSelect={false}
-              icon={<NearLogoIcon height="3.5" mt="-0.5" width="3.5" />}
+              icon={<NearIcon height="3.5" mt="-0.5" width="3.5" />}
               onClick={setShowNear.toggle}
             >
               <Flex>
@@ -112,12 +111,9 @@ export const SignedInButton = () => {
               </Flex>
             </MenuItem>
 
-            <MenuItem icon={<SignOutIcon />} onClick={handleMasterKey}>
+            <MenuItem icon={<KeyIcon height="15px" width="14px" />} onClick={handleMasterKey}>
               Master Key
             </MenuItem>
-            <Link href="/drops">
-              <MenuItem icon={<DropIcon />}>My drops</MenuItem>
-            </Link>
             <MenuItem icon={<SignOutIcon />} onClick={handleSignOut}>
               Sign out
             </MenuItem>

@@ -1,7 +1,8 @@
-import { Text, VStack } from '@chakra-ui/react';
+import { Text, useBoolean, VStack } from '@chakra-ui/react';
 
-import { WALLET_OPTIONS } from '@/constants/common';
 import keypomInstance from '@/lib/keypom';
+import { storeClaimDrop } from '@/utils/claimedDrops';
+import getConfig from '@/config/config';
 
 import { WalletOption } from './WalletOption';
 
@@ -10,32 +11,66 @@ interface CreateWalletProps {
   wallets: string[];
   contractId: string;
   secretKey: string;
+  redirectUrl?: string;
 }
 
-const defaultWallet = WALLET_OPTIONS[0];
+const { supportedWallets, defaultWallet } = getConfig();
 
 export const CreateWallet = ({
   contractId,
   secretKey,
   onClick,
   wallets = ['mynearwallet'],
+  redirectUrl,
 }: CreateWalletProps) => {
-  const handleWalletClick = async (walletName: string) => {
-    const url = await keypomInstance.generateExternalWalletLink(walletName, contractId, secretKey);
-    window.location.href = url;
+  const [isClaimSuccessful, setSuccess] = useBoolean(false);
+
+  const handleWalletClick = async (walletName: string, wRef: any) => {
+    try {
+      const url = await keypomInstance.generateExternalWalletLink(
+        walletName,
+        contractId,
+        secretKey,
+      );
+
+      window.setTimeout(async () => {
+        // check if the drop still exists after X seconds, if its claimed, then we should show a message
+        const isDropExist = await keypomInstance.checkIfDropExists(secretKey);
+
+        if (!isDropExist) {
+          setSuccess.on();
+          storeClaimDrop(secretKey);
+        }
+      }, 20000);
+
+      wRef.location.href = `${url}?redirectUrl=${redirectUrl}`;
+    } catch (err) {
+      // drop has been claimed
+      // refresh to show error
+      window.location.reload();
+    }
   };
 
-  const walletOptions = WALLET_OPTIONS.filter((wallet) => wallets.includes(wallet.id)).map(
-    (options, index) => (
+  const walletOptions = supportedWallets
+
+    // TODO replace with filter this is temporary
+    // .filter((wallet) => wallets.includes(wallet.id))
+    .filter((wallet) => wallet.name === 'mynearwallet')
+
+    .map((options, index) => (
       <WalletOption
         key={index}
-        handleWalletClick={async () => {
-          await handleWalletClick(options.id);
+        handleWalletClick={() => {
+          const wRef = window.open();
+          handleWalletClick(options.name, wRef);
         }}
         {...options}
       />
-    ),
-  );
+    ));
+
+  if (isClaimSuccessful) {
+    return <Text color="green.600">✅ Claim successful</Text>;
+  }
 
   return (
     <>
@@ -48,7 +83,8 @@ export const CreateWallet = ({
         ) : (
           <WalletOption
             handleWalletClick={async () => {
-              await handleWalletClick(defaultWallet?.id);
+              const wRef = window.open();
+              await handleWalletClick(defaultWallet.name, wRef);
             }}
             {...defaultWallet}
           />

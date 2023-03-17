@@ -5,7 +5,7 @@ import { providers } from 'near-api-js';
 
 // wallet selector UI
 import '@near-wallet-selector/modal-ui/styles.css';
-import { setupModal } from '@near-wallet-selector/modal-ui';
+//import './components/modal/src/lib/components/styles.css';
 import LedgerIconUrl from '@near-wallet-selector/ledger/assets/ledger-icon.png';
 import MyNearIconUrl from '@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png';
 
@@ -14,6 +14,9 @@ import { setupWalletSelector } from '@near-wallet-selector/core';
 import { setupLedger } from '@near-wallet-selector/ledger';
 import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet';
 import { setupKeypom } from 'keypom-js';
+import { setupModal } from '@near-wallet-selector/modal-ui';
+import { KEYPOM_OPTIONS } from './keypom-data';
+//import { setupModal } from './components/modal/src';
 
 const THIRTY_TGAS = '30000000000000';
 const NO_DEPOSIT = '0';
@@ -41,7 +44,12 @@ export class Wallet {
       modules: [
         setupMyNearWallet({ iconUrl: MyNearIconUrl }),
         setupLedger({ iconUrl: LedgerIconUrl }),
-        setupKeypom({ desiredUrl: "/keypom-url/", networkId: this.network})
+        setupKeypom({ 
+          desiredUrl: "/keypom-url#", 
+          networkId: this.network, 
+          contractId: this.createAccessKeyFor,
+          modalOptions: KEYPOM_OPTIONS
+        })
       ],
     });
 
@@ -54,19 +62,22 @@ export class Wallet {
 
     return isSignedIn;
   }
-
+  
   // Sign-in method
   signIn() {
     const description = 'Please select a wallet to sign in.';
     const modal = setupModal(this.walletSelector, { contractId: this.createAccessKeyFor, description });
+    //modal.show('action-error');
     modal.show();
   }
 
   // Sign-out method
   signOut() {
-    this.wallet.signOut();
-    this.wallet = this.accountId = this.createAccessKeyFor = null;
-    window.location.replace(window.location.origin + window.location.pathname);
+    const wall = this.wallet.showModal();
+    console.log('wall: ', wall)
+    // this.wallet.signOut();
+    // this.wallet = this.accountId = this.createAccessKeyFor = null;
+    // window.location.replace(window.location.origin + window.location.pathname);
   }
 
   // Make a read-only call to retrieve information from the network

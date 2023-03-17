@@ -13,6 +13,7 @@ import {
   Center,
   Spinner,
   Text,
+  ModalCloseButton,
 } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 
@@ -23,15 +24,15 @@ import { RoundIcon } from '../IconBox/RoundIcon';
 // TODO: enhance css after merging sushan's sign in modal branch
 export const AppModal = () => {
   const { appModal, setAppModal } = useAppContext();
-
   const [values, setValues] = useState({});
   const [loading, setLoading] = useState(false);
-
+  console.log(appModal);
   return (
     <Modal
       isCentered
       closeOnOverlayClick={appModal.closeOnOverlayClick || false}
       isOpen={appModal.isOpen}
+      trapFocus={appModal.trapFocus || true}
       onClose={() => {
         setAppModal({
           isOpen: false,
@@ -49,6 +50,7 @@ export const AppModal = () => {
         >
           {appModal.header && <h4>{appModal.header}</h4>}
         </ModalHeader>
+        {appModal.closeButtonVisible && <ModalCloseButton />}
         <ModalBody>
           {appModal.isLoading && (
             <Center>
@@ -98,7 +100,7 @@ export const AppModal = () => {
 
         {appModal.options && appModal.options.length > 0 && (
           <ModalFooter>
-            <ButtonGroup>
+            <ButtonGroup justifyContent="center" w="full">
               {appModal.options.map(({ label, func, buttonProps, lazy }, i) => (
                 <Button
                   key={i}

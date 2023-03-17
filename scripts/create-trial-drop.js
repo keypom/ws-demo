@@ -28,7 +28,7 @@ async function createTrialAccount(){
         'hello-near.examples.keypom.testnet'
     ]
 
-    const newUserName = "demo-" + Date.now()
+    // const newUserName = "benji-monday" + Date.now()
 
     const {keys: {secretKeys: trialSecretKeys, publicKeys: trialPublicKeys}} 
     = await createTrialAccountDrop({
@@ -44,31 +44,38 @@ async function createTrialAccount(){
         repayAmountNEAR: 5,
         repayTo: "dennis.near"
     })
-    
-    const newAccountId = `${newUserName}.linkdrop-beta.keypom.testnet`
-	await claimTrialAccountDrop({
-        secretKey: trialSecretKeys[0],
-        desiredAccountId: newAccountId,
-    })
-    
+
+    const trialMeta = "bafkreiavyvm5qw4pdinqddeisfgl6gx55on4l32bocqqrlardulnrmqmy4"
+    const keypomInstance = "http://localhost:3030"//"https://testnet.keypom-airfoil.pages.dev"
     console.log(`
-	
-	${JSON.stringify({
-		account_id: newAccountId,
-		public_key: trialPublicKeys[0],
-		private_key: trialSecretKeys[0]
-	})}
-
-	`)
-
-	console.log(`/keypom-url/${newAccountId}#${trialSecretKeys[0]}`)
-
-
-	console.log(`
     
-    localhost:3000/claim/v2.keypom.testnet#${trialSecretKeys[0]}
+ ${keypomInstance}/claim/v2.keypom.testnet?meta=${trialMeta}#${trialSecretKeys[0]}
     
     `)
+
+    await claimTrialAccountDrop({
+        secretKey: trialSecretKeys[0],
+        desiredAccountId: "benji-monday" + Date.now() + ".linkdrop-beta.keypom.testnet",
+    })
+    
+    // console.log(`
+	
+	// ${JSON.stringify({
+	// 	account_id: newAccountId,
+	// 	public_key: trialPublicKeys[0],
+	// 	private_key: trialSecretKeys[0]
+	// })}
+
+	// `)
+
+	// console.log(`/keypom-url/${newAccountId}#${trialSecretKeys[0]}`)
+
+
+	// console.log(`
+    
+    // localhost:3000/claim/v2.keypom.testnet#${trialSecretKeys[0]}
+    
+    // `)
 }
 
 createTrialAccount();

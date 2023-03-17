@@ -1,40 +1,34 @@
 import { Badge, Box, Button, Text, useToast } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-  getDropInformation,
-  generateKeys,
-  getKeyInformationBatch,
-  deleteKeys,
-  getKeySupplyForDrop,
-} from 'keypom-js';
 
 import { useAuthWalletContext } from '@/contexts/AuthWalletContext';
 import { CopyIcon, DeleteIcon } from '@/components/Icons';
 import { DropManager } from '@/features/drop-manager/components/DropManager';
-import { get } from '@/utils/localStorage';
-import { MASTER_KEY, PAGE_SIZE_LIMIT } from '@/constants/common';
+import { PAGE_SIZE_LIMIT } from '@/constants/common';
 import { usePagination } from '@/hooks/usePagination';
 import { type DataItem } from '@/components/Table/types';
 import { useAppContext } from '@/contexts/AppContext';
 import getConfig from '@/config/config';
 import { useValidMasterKey } from '@/hooks/useValidMasterKey';
 import { share } from '@/utils/share';
+import keypomInstance from '@/lib/keypom';
 
 import { tableColumns } from '../../components/TableColumn';
 import { INITIAL_SAMPLE_DATA } from '../../constants/common';
 import { setConfirmationModalHelper } from '../../components/ConfirmationModal';
 import { setMasterKeyValidityModal } from '../../components/MasterKeyValidityModal';
+import { setMissingDropModal } from '../../components/MissingDropModal';
 
 export default function TokenDropManagerPage() {
   const navigate = useNavigate();
   const { setAppModal } = useAppContext();
   const toast = useToast();
 
-  const { id: dropId } = useParams();
+  const { id: dropId = '' } = useParams();
   const [loading, setLoading] = useState(true);
 
-  const [name, setName] = useState('Drop');
+  const [name, setName] = useState('Untitled');
   const [dataSize, setDataSize] = useState<number>(0);
   const [claimed, setClaimed] = useState<number>(0);
   const [data, setData] = useState<DataItem[]>([INITIAL_SAMPLE_DATA[0]]);
@@ -43,10 +37,22 @@ export default function TokenDropManagerPage() {
   const { selector, accountId } = useAuthWalletContext();
 
   useEffect(() => {
-    if (selector === null) return;
-    const getWallet = async () => {
-      setWallet(await selector.wallet());
-    };
+    if (dropId === '') navigate('/drops');
+  }, [dropId]);
+
+  const getWallet = async () => {
+    if (selector === null) {
+      return;
+    }
+    try {
+      const selectorWallet = await selector?.wallet();
+      setWallet(selectorWallet);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
     getWallet();
   }, [selector]);
 
@@ -68,8 +74,8 @@ export default function TokenDropManagerPage() {
   const {
     hasPagination,
     pagination,
-    firstPage,
-    lastPage,
+    isFirstPage,
+    isLastPage,
     loading: paginationLoading,
     handleNextPage,
     handlePrevPage,
@@ -89,55 +95,40 @@ export default function TokenDropManagerPage() {
     },
   });
 
-  const handleGetDrops = async ({ pageIndex = 0, pageSize = PAGE_SIZE_LIMIT }) => {
-    if (!accountId) return null;
-    let drop = await getDropInformation({
-      dropId,
-    });
-    if (!drop) {
-      // TODO Show error
-      drop = {
-        metadata: '{}',
-      };
-    }
+  const handleGetDrops = useCallback(
+    async ({ pageIndex = 0, pageSize = PAGE_SIZE_LIMIT }) => {
+      if (!accountId) return;
+      const keyInfoReturn = await keypomInstance.getKeysInfo(dropId, pageIndex, pageSize, () => {
+        setMissingDropModal(setAppModal); // User will be redirected if getDropInformation fails
+        navigate('/drops');
+      });
+      if (keyInfoReturn === undefined) {
+        navigate('/drops');
+        return;
+      }
+      const { dropSize, dropName, publicKeys, secretKeys, keyInfo } = keyInfoReturn;
+      setDataSize(dropSize);
+      setClaimed(await keypomInstance.getClaimedDropInfo(dropId));
+      setName(dropName);
 
-    setDataSize(drop.next_key_id);
-    setClaimed(await getKeySupplyForDrop({ dropId }));
+      setData(
+        secretKeys.map((key: string, i) => ({
+          id: i,
+          publicKey: publicKeys[i],
+          link: `${window.location.origin}/claim/${getConfig().contractId}#${key.replace(
+            'ed25519:',
+            '',
+          )}`,
+          slug: key.substring(8, 16),
+          hasClaimed: keyInfo[i] === null,
+          action: 'delete',
+        })),
+      );
 
-    const metadata = JSON.parse(drop.metadata as unknown as string);
-    console.log('metadata: ', metadata);
-
-    setName(metadata?.dropName || 'Untitled Drop');
-
-    const { publicKeys, secretKeys } = await generateKeys({
-      numKeys:
-        (pageIndex + 1) * pageSize > drop.next_key_id
-          ? drop.next_key_id - pageIndex * pageSize
-          : Math.min(drop.next_key_id, pageSize),
-      rootEntropy: `${get(MASTER_KEY) as string}-${dropId}`,
-      autoMetaNonceStart: pageIndex * pageSize,
-    });
-
-    const keyInfo = await getKeyInformationBatch({
-      publicKeys,
-    });
-
-    setData(
-      secretKeys.map((key, i) => ({
-        id: i,
-        publicKey: publicKeys[i],
-        link: `${window.location.origin}/claim/${getConfig().contractId}#${key.replace(
-          'ed25519:',
-          '',
-        )}`,
-        slug: key.substring(8, 16),
-        hasClaimed: keyInfo[i] === null,
-        action: 'delete',
-      })),
-    );
-
-    setLoading(false);
-  };
+      setLoading(false);
+    },
+    [pagination],
+  );
 
   useEffect(() => {
     handleGetDrops({});
@@ -152,14 +143,13 @@ export default function TokenDropManagerPage() {
     setConfirmationModalHelper(
       setAppModal,
       async () => {
-        await deleteKeys({
+        await keypomInstance.deleteKeys({
           wallet,
           dropId,
           publicKeys: pubKey,
         });
         window.location.reload();
       },
-      () => null,
       'key',
     );
   };
@@ -226,8 +216,8 @@ export default function TokenDropManagerPage() {
             hasPagination,
             id: 'token',
             paginationLoading,
-            firstPage,
-            lastPage,
+            isFirstPage,
+            isLastPage,
             handleNextPage,
             handlePrevPage,
           }}
