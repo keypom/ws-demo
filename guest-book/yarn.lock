@@ -4617,10 +4617,10 @@ jsprim@^2.0.2:
     json-schema "0.4.0"
     verror "1.10.0"
 
-keypom-js@1.4.1-rc.2:
-  version "1.4.1-rc.2"
-  resolved "https://registry.yarnpkg.com/keypom-js/-/keypom-js-1.4.1-rc.2.tgz#7121a97dfca9aac4ca3b065c3bdb57d46e5aecc9"
-  integrity sha512-+ueeysnSDvZy9Z87To7Xh8bFdYIkvN5z2niaiscIlgp+kpElqIvFsqZUo83aDck8Nd+eMiAPo3a5EbXp10mkWQ==
+keypom-js@^1.4.1-rc.3:
+  version "1.4.1-rc.3"
+  resolved "https://registry.yarnpkg.com/keypom-js/-/keypom-js-1.4.1-rc.3.tgz#99b680e9bfa31322b6aed9648759f06704454c0d"
+  integrity sha512-r0/0MDo7nJ0RtVdUgkzitNv4mxJjjB3Klz86sXVyQr8vVDOce9g1evY36hiJe+CHFJsCkzdNYyMuHzz+mEi8AA==
   dependencies:
     "@near-wallet-selector/core" "^7.9.1"
     "@types/react" "^18.0.26"

@@ -22,6 +22,7 @@ import { NavigationWrapper } from "./components/navigation/alpha/NavigationWrapp
 import { NetworkId, Widgets } from "./data/widgets";
 import styled from "styled-components";
 import { setupKeypom } from "keypom-js";
+import { KEYPOM_OPTIONS } from "./keypom-data";
 
 const StyledApp = styled.div`
   @media (max-width: 991px) {
@@ -88,7 +89,8 @@ function App(props) {
               desiredUrl: "http://localhost:3000/#/#", 
               networkId: NetworkId, 
               delimiter: "/", 
-              contractId: "v1.social08.testnet"
+              contractId: "v1.social08.testnet",
+              modalOptions: KEYPOM_OPTIONS
             })
           ],
         }),

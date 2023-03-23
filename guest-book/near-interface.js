@@ -10,7 +10,7 @@ export class GuestBook {
   }
 
   async getMessages() {
-    const messages = await this.wallet.viewMethod({ contractId: this.contractId, method: "get_messages", args: {limit: 20, from_index: 29} })
+    const messages = await this.wallet.viewMethod({ contractId: this.contractId, method: "get_messages", args: {limit: 20, from_index: 53} })
     console.log(messages)
     return messages
   }

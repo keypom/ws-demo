@@ -73,8 +73,8 @@ export class Wallet {
 
   // Sign-out method
   signOut() {
-    const wall = this.wallet.showModal();
-    console.log('wall: ', wall)
+    this.wallet.showModal('action-error');
+    //this.wallet.showModal();
     // this.wallet.signOut();
     // this.wallet = this.accountId = this.createAccessKeyFor = null;
     // window.location.replace(window.location.origin + window.location.pathname);
