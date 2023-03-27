@@ -88,7 +88,6 @@ function App(props) {
             setupKeypom({ 
               desiredUrl: "http://localhost:3000/#/#", 
               networkId: NetworkId, 
-              delimiter: "/", 
               contractId: "v1.social08.testnet",
               modalOptions: KEYPOM_OPTIONS
             })

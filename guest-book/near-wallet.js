@@ -14,9 +14,9 @@ import { setupWalletSelector } from '@near-wallet-selector/core';
 import { setupLedger } from '@near-wallet-selector/ledger';
 import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet';
 import { setupKeypom } from 'keypom-js';
-import { setupModal } from '@near-wallet-selector/modal-ui';
+//import { setupModal } from '@near-wallet-selector/modal-ui';
 import { KEYPOM_OPTIONS } from './keypom-data';
-//import { setupModal } from './components/modal/src';
+//import { setupModal } from './components/src';
 
 const THIRTY_TGAS = '30000000000000';
 const NO_DEPOSIT = '0';
@@ -45,7 +45,7 @@ export class Wallet {
         setupMyNearWallet({ iconUrl: MyNearIconUrl }),
         setupLedger({ iconUrl: LedgerIconUrl }),
         setupKeypom({ 
-          desiredUrl: "/keypom-url#", 
+          desiredUrl: "http://localhost:1234/keypom-url#", 
           networkId: this.network, 
           contractId: this.createAccessKeyFor,
           modalOptions: KEYPOM_OPTIONS
@@ -66,18 +66,19 @@ export class Wallet {
   // Sign-in method
   signIn() {
     const description = 'Please select a wallet to sign in.';
-    const modal = setupModal(this.walletSelector, { contractId: this.createAccessKeyFor, description });
-    //modal.show('action-error');
-    modal.show();
+    //const modal = setupModal(this.walletSelector, { contractId: this.createAccessKeyFor, description });
+    console.log('this.wallet: ', this.wallet)
+    this.wallet.showModal({id: 'action-error'});
+    //modal.show();
   }
 
   // Sign-out method
   signOut() {
-    this.wallet.showModal('action-error');
+    //this.wallet.showModal('action-error');
     //this.wallet.showModal();
-    // this.wallet.signOut();
-    // this.wallet = this.accountId = this.createAccessKeyFor = null;
-    // window.location.replace(window.location.origin + window.location.pathname);
+    this.wallet.signOut();
+    this.wallet = this.accountId = this.createAccessKeyFor = null;
+    window.location.replace(window.location.origin + window.location.pathname);
   }
 
   // Make a read-only call to retrieve information from the network
